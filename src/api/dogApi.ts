@@ -11,3 +11,70 @@ export async function getDogBreeds(): Promise<string[]> {
 
   return response.json();
 }
+
+export interface DogSearchParams {
+  breeds?: string[];
+  zipCodes?: string[];
+  ageMin?: number;
+  ageMax?: number;
+  size?: number;
+  from?: number;
+  sort?: string; // e.g. "breed:asc"
+}
+
+export interface DogSearchResponse {
+  resultIds: string[];
+  total: number;
+  next?: string;
+  prev?: string;
+}
+
+export async function searchDogs(params: DogSearchParams): Promise<DogSearchResponse> {
+  const query = new URLSearchParams();
+  if (params.breeds) params.breeds.forEach(breed => query.append("breeds", breed));
+  if (params.zipCodes) params.zipCodes.forEach(zip => query.append("zipCodes", zip));
+  if (params.ageMin !== undefined) query.append("ageMin", params.ageMin.toString());
+  if (params.ageMax !== undefined) query.append("ageMax", params.ageMax.toString());
+  if (params.size !== undefined) query.append("size", params.size.toString());
+  if (params.from !== undefined) query.append("from", params.from.toString());
+  if (params.sort) query.append("sort", params.sort);
+
+  const response = await fetch(`${BASE_URL}/dogs/search?${query.toString()}`, {
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to search dogs: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+export interface Dog {
+  img: string;
+  name: string;
+  age: number;
+  breed: string;
+  zip_code: string;
+  id: string;
+}
+
+export async function getDogsByIds(ids: string[]): Promise<Dog[]> {
+  if (ids.length === 0) return [];
+  if (ids.length > 100) throw new Error("Cannot fetch more than 100 dogs at once.");
+
+  const response = await fetch(`${BASE_URL}/dogs`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(ids),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch dogs: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}

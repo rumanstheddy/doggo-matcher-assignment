@@ -1,21 +1,9 @@
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Login } from "./pages/login";
 import { Search } from "./pages/search";
-import { getDogBreeds } from "./api/dogApi";
 import "./index.css";
-
-function useAuthStatus() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    getDogBreeds()
-      .then(() => setIsAuthenticated(true))
-      .catch(() => setIsAuthenticated(false));
-  }, []);
-
-  return isAuthenticated;
-}
+import { useAuthStatus } from "./hooks/useAuthStatus";
 
 function AuthGate() {
   const isAuthenticated = useAuthStatus();
