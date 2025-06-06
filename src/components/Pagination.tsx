@@ -52,17 +52,17 @@ export function Pagination({
   }
 
   return (
-    <div className="flex items-center gap-2 justify-center my-4">
+    <div className="flex items-center gap-2 justify-center my-4 sticky bottom-4 z-50 bg-base-100 shadow-[0_-0_8px_0_rgba(0,0,0,0.7)] p-4 rounded-3xl">
       <button
-        className="btn btn-sm btn-outline"
+        className="btn btn-md hover:btn-primary rounded-3xl"
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="Previous page"
       >
-        ⬅️
+        ⬅️ Prev
       </button>
       <button
-        className="btn btn-sm btn-outline"
+        className="btn btn-md hover:btn-primary rounded-3xl"
         onClick={() => handlePageChange(1)}
         disabled={currentPage === 1}
         aria-label="First page"
@@ -77,11 +77,11 @@ export function Pagination({
         onChange={handleInputChange}
         onBlur={handleInputBlur}
         onKeyDown={handleInputKeyDown}
-        className="input input-sm input-bordered w-16 text-center mx-2"
+        className="input input-md w-16 text-center mx-2 focus:input-primary"
         aria-label="Go to page"
       />
       <button
-        className="btn btn-sm btn-outline"
+        className="btn btn-md hover:btn-primary rounded-3xl"
         onClick={() => handlePageChange(totalPages)}
         disabled={currentPage === totalPages}
         aria-label="Last page"
@@ -89,12 +89,12 @@ export function Pagination({
         {totalPages}
       </button>
       <button
-        className="btn btn-sm btn-outline"
+        className="btn btn-md hover:btn-primary rounded-3xl"
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-label="Next page"
       >
-        ➡️
+        Next ➡️
       </button>
     </div>
   );
