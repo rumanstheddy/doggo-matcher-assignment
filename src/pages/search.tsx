@@ -23,8 +23,8 @@ export function Search() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">Doggo Matcher 🐶</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="text-3xl font-bold mb-4 text-center mt-10">Doggo Matcher 🐶</h1>
       <DogTable />
     </div>
   );
