@@ -4,6 +4,9 @@ import { Login } from "./pages/login";
 import { Search } from "./pages/search";
 import "./index.css";
 import { useAuthStatus } from "./hooks/useAuthStatus";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function AuthGate() {
   const isAuthenticated = useAuthStatus();
@@ -26,13 +29,15 @@ function AuthGate() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<AuthGate />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AuthGate />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

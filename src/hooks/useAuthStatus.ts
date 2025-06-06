@@ -6,7 +6,7 @@ export function useAuthStatus() {
 
   useEffect(() => {
     getDogBreeds()
-      .then(() => setIsAuthenticated(true))
+      .then(() => {setIsAuthenticated(true)})
       .catch(() => setIsAuthenticated(false));
   }, []);
 

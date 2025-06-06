@@ -1,3 +1,33 @@
+import { DogTable } from "../components/DogTable";
+import { useAuthStatus } from "../hooks/useAuthStatus";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+
 export function Search() {
-  return <h1 className="text-3xl font-bold">Doggo Matcher 🐶</h1>;
+  const isAuthenticated = useAuthStatus();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("Auth status:", isAuthenticated);
+    if (isAuthenticated === false) {
+      navigate("/login", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (isAuthenticated === null) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Checking authentication...
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <h1 className="text-3xl font-bold mb-4">Doggo Matcher 🐶</h1>
+      <DogTable />
+    </div>
+  );
 }
+
+// I want to implement a search bar where users can select amongst different dog breeds and filter the results based on the selected breeds. I will worry about the filtering later
