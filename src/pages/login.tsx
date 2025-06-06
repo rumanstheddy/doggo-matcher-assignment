@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { login } from "../api/authApi";
 
 export function Login() {
@@ -6,6 +7,7 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -14,6 +16,9 @@ export function Login() {
     try {
       const response = await login({ name, email });
       // OK status checked, no success message needed
+      if (response.ok) {
+        navigate("/search", { replace: true });
+      }
     } catch (err: any) {
       setError(err.message || "Login failed");
     } finally {
