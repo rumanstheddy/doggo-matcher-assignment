@@ -56,15 +56,33 @@ export function useDogTableData() {
 
   const sortParam = `${sortField}:${sortDirection}`;
 
-  // Query for dog search result IDs
+  // Pagination logic
+  let size = Number(searchParams.get("size") || 25);
+  if (size > 100) {
+    size = 100;
+    // If the URL param is > 100, update it to 100
+    if (searchParams.get("size") && Number(searchParams.get("size")) > 100) {
+      setSearchParams({
+        ...Object.fromEntries(searchParams),
+        size: "100",
+      });
+    }
+  }
+  const from = Number(searchParams.get("from") || 0);
+
+  // Update: include 'from' and 'size' in the dog search query
   const {
     data: searchResult,
     isLoading: searchLoading,
     error: searchError,
   } = useQuery({
-    queryKey: ["dogSearch", { sort: sortParam }],
-    queryFn: () => searchDogs(sortParam ? { sort: sortParam } : {}),
+    queryKey: ["dogSearch", { sort: sortParam, from, size }],
+    queryFn: () => searchDogs({ sort: sortParam, from, size }),
   });
+
+  const total = searchResult?.total || 0;
+  const currentPage = Math.floor(from / size) + 1;
+  const totalPages = Math.ceil(total / size);
 
   // Query for dog details by IDs (only if searchResult is available)
   const {
@@ -113,6 +131,14 @@ export function useDogTableData() {
     setFavouriteIds(updated);
   }
 
+  function handlePageChange(page: number) {
+    setSearchParams({
+      ...Object.fromEntries(searchParams),
+      from: ((page - 1) * size).toString(),
+      size: size.toString(),
+    });
+  }
+
   return {
     sortField,
     sortDirection,
@@ -126,5 +152,8 @@ export function useDogTableData() {
     isAllFavourited,
     handleToggleAllFavourites,
     handleToggleFavourite,
+    currentPage,
+    totalPages,
+    handlePageChange,
   };
 }

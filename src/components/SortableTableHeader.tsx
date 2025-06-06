@@ -27,10 +27,10 @@ export function SortableTableHeader({
         {/* Reserve space for the arrow, even if not shown */}
         <span className="inline-block w-4 text-center">
           {sortDirection === "asc" && (
-            <span aria-label="sorted ascending">🔼</span>
+            <span aria-label="sorted ascending">⬆️</span>
           )}
           {sortDirection === "desc" && (
-            <span aria-label="sorted descending">🔽</span>
+            <span aria-label="sorted descending">⬇️</span>
           )}
         </span>
       </button>

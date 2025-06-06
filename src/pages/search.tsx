@@ -8,7 +8,6 @@ export function Search() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Auth status:", isAuthenticated);
     if (isAuthenticated === false) {
       navigate("/login", { replace: true });
     }
@@ -24,7 +23,9 @@ export function Search() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold mb-4 text-center mt-10">Doggo Matcher 🐶</h1>
+      <h1 className="text-3xl font-bold mb-4 text-center mt-10">
+        Doggo Matcher 🐶
+      </h1>
       <DogTable />
     </div>
   );
