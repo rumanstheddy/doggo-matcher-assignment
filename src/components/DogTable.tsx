@@ -2,7 +2,10 @@ import { useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchDogs, getDogsByIds } from "../api/dogApi";
 import { DogRow } from "./DogRow";
-import { SortableTableHeader } from "./SortableTableHeader";
+import {
+  SortableTableHeader,
+  FavouriteTableHeader,
+} from "./SortableTableHeader";
 import type { SortDirection } from "./SortableTableHeader";
 
 const SORTABLE_COLUMNS = [
@@ -11,9 +14,26 @@ const SORTABLE_COLUMNS = [
   { key: "breed", label: "Breed" },
 ];
 
+function getLocalStorageFavKey() {
+  const name = localStorage.getItem("userName") || "default";
+  const email = localStorage.getItem("userEmail") || "default";
+  return `favouriteDogIds_${name}_${email}`;
+}
+
+function getLocalStorageFavourites() {
+  return JSON.parse(localStorage.getItem(getLocalStorageFavKey()) || "[]");
+}
+
+function setLocalStorageFavourites(ids: string[]) {
+  localStorage.setItem(getLocalStorageFavKey(), JSON.stringify(ids));
+}
+
 export function DogTable() {
   const [sortField, setSortField] = useState<string | undefined>(undefined);
   const [sortDirection, setSortDirection] = useState<SortDirection>(undefined);
+  const [favouriteIds, setFavouriteIds] = useState<string[]>(
+    getLocalStorageFavourites()
+  );
 
   const handleSort = useCallback(
     (field: string) => {
@@ -22,11 +42,7 @@ export function DogTable() {
         setSortDirection("asc");
       } else {
         setSortDirection((prev) =>
-          prev === "asc"
-            ? "desc"
-            : prev === "desc"
-            ? undefined
-            : "asc"
+          prev === "asc" ? "desc" : prev === "desc" ? undefined : "asc"
         );
         if (sortDirection === "desc") setSortField(undefined);
       }
@@ -61,6 +77,31 @@ export function DogTable() {
     enabled: !!searchResult,
   });
 
+  // Update favouriteIds state if localStorage changes (e.g., by another DogRow)
+  // Optionally, you could use a custom event or context for more robust sync
+  // For now, update on mount and when dogs change
+  useState(() => {
+    setFavouriteIds(getLocalStorageFavourites());
+  });
+
+  const allIds = dogs?.map((d) => d.id) || [];
+  const isAllFavourited =
+    allIds.length > 0 && allIds.every((id) => favouriteIds.includes(id));
+
+  function handleToggleAllFavourites() {
+    if (isAllFavourited) {
+      // Remove all current page dogs from favourites
+      const updated = favouriteIds.filter((id) => !allIds.includes(id));
+      setLocalStorageFavourites(updated);
+      setFavouriteIds(updated);
+    } else {
+      // Add all current page dogs to favourites
+      const updated = Array.from(new Set([...favouriteIds, ...allIds]));
+      setLocalStorageFavourites(updated);
+      setFavouriteIds(updated);
+    }
+  }
+
   if (searchLoading || dogsLoading) return <div>Loading...</div>;
   if (searchError)
     return <div className="text-error">{(searchError as Error).message}</div>;
@@ -71,6 +112,10 @@ export function DogTable() {
     <table className="table w-full max-w-3xl border border-base-300 rounded-3xl overflow-hidden shadow-lg mt-4">
       <thead>
         <tr className="bg-base-200">
+          <FavouriteTableHeader
+            onClick={handleToggleAllFavourites}
+            isAllFavourited={isAllFavourited}
+          />
           {SORTABLE_COLUMNS.map((col) => (
             <SortableTableHeader
               key={col.key}
@@ -83,7 +128,24 @@ export function DogTable() {
         </tr>
       </thead>
       <tbody>
-        {dogs && dogs.map((dog) => <DogRow key={dog.id} dog={dog} />)}
+        {dogs &&
+          dogs.map((dog) => (
+            <DogRow
+              key={dog.id}
+              dog={dog}
+              isFavourite={favouriteIds.includes(dog.id)}
+              onToggleFavourite={(id) => {
+                let updated;
+                if (favouriteIds.includes(id)) {
+                  updated = favouriteIds.filter((favId) => favId !== id);
+                } else {
+                  updated = [...favouriteIds, id];
+                }
+                setLocalStorageFavourites(updated);
+                setFavouriteIds(updated);
+              }}
+            />
+          ))}
       </tbody>
     </table>
   );

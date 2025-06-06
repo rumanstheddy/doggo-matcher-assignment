@@ -15,12 +15,15 @@ export function Login() {
     setError(null);
     try {
       const response = await login({ name, email });
-      // OK status checked, no success message needed
+      // Store name and email in localStorage only if login is successful
       if (response.ok) {
+        localStorage.setItem("userName", name);
+        localStorage.setItem("userEmail", email);
         navigate("/search", { replace: true });
       }
-    } catch (err: any) {
-      setError(err.message || "Login failed");
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      setError(error.message || "Login failed");
     } finally {
       setLoading(false);
     }
