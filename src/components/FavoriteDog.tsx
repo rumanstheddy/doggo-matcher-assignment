@@ -8,9 +8,7 @@ interface FavoriteDogProps {
 
 export function FavoriteDog({ dog, onRemove }: FavoriteDogProps) {
   return (
-    <li
-      className="flex items-center gap-3 bg-base-100 rounded-xl shadow p-2"
-    >
+    <li className="flex items-center gap-3 bg-base-100 rounded-xl shadow p-2">
       <img
         src={dog.img}
         alt={dog.name}
@@ -19,9 +17,9 @@ export function FavoriteDog({ dog, onRemove }: FavoriteDogProps) {
       <div className="flex-1">
         <div className="font-semibold text-base flex items-center gap-2">
           {dog.name}
-          <BreedBadge breed={dog.breed} />
+          <div className="text-sm text-gray-500">Age: {dog.age}</div>
         </div>
-        <div className="text-sm text-gray-500">Age: {dog.age}</div>
+        <BreedBadge breed={dog.breed} />
       </div>
       <button
         className="btn btn-circle btn-sm btn-error text-white"

@@ -44,7 +44,7 @@ function BreedSelectModal({
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Select Dog Breeds</h2>
           <button
-            className="btn btn-circle text-2xl hover:btn-error pb-1"
+            className="btn btn-circle text-2xl hover:btn-error hover:text-white pb-1"
             onClick={onClose}
             aria-label="Close"
           >
@@ -129,9 +129,9 @@ export function BreedSelect({
 
   return (
     <div className="w-full max-w-md mx-auto relative">
-      <label className="block text-sm font-medium mb-1">Select Breeds</label>
+      <label className="block text-sm font-medium mb-1 pl-2">Select Breeds</label>
       <input
-        className="input input-bordered w-full cursor-pointer bg-base-200"
+        className="input input-bordered w-full cursor-pointer bg-base-200 rounded-2xl"
         type="text"
         placeholder="Type to search breeds..."
         value={""}

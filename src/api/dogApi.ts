@@ -78,3 +78,23 @@ export async function getDogsByIds(ids: string[]): Promise<Dog[]> {
 
   return response.json();
 }
+
+export interface DogMatchResponse {
+  match: string; // dog id
+}
+
+export async function matchDogs(ids: string[]): Promise<DogMatchResponse> {
+  if (ids.length === 0) throw new Error("No dog IDs provided for matching.");
+  const response = await fetch(`${BASE_URL}/dogs/match`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(ids),
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to match dogs: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+}

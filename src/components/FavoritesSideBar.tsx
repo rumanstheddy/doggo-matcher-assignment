@@ -41,7 +41,7 @@ export function FavoritesSideBar() {
         <div className="relative bg-base-200 text-base-content min-h-full w-80 p-4">
           {/* Close button in the top right of the sidebar */}
           <button
-            className="btn btn-circle text-2xl hover:btn-error pb-1 absolute top-2 right-2"
+            className="btn btn-circle text-2xl hover:btn-error hover:text-white pb-1 absolute top-2 right-2"
             aria-label="Close sidebar"
             onClick={closeDrawer}
             type="button"

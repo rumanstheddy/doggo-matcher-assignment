@@ -54,11 +54,11 @@ const DogFilters: React.FC<DogFiltersProps> = ({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Min Age</label>
+          <label className="block text-sm font-medium mb-1 pl-2">Min Age</label>
           <input
             type="number"
             min={0}
-            className="input input-bordered w-24"
+            className="input w-24 rounded-2xl focus:input-primary" 
             value={pendingMinAge ?? ""}
             onChange={(e) =>
               setPendingMinAge(e.target.value ? Number(e.target.value) : null)
@@ -67,11 +67,11 @@ const DogFilters: React.FC<DogFiltersProps> = ({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Max Age</label>
+          <label className="block text-sm font-medium mb-1 pl-2">Max Age</label>
           <input
             type="number"
             min={0}
-            className="input input-bordered w-24"
+            className="input w-24 rounded-2xl focus:input-primary"
             value={pendingMaxAge ?? ""}
             onChange={(e) =>
               setPendingMaxAge(e.target.value ? Number(e.target.value) : null)
@@ -82,17 +82,32 @@ const DogFilters: React.FC<DogFiltersProps> = ({
         <div className="flex-1 flex justify-end items-end gap-2">
           <button
             type="button"
-            className="btn btn-error text-white"
+            className="btn hover:btn-error text-base-content flex items-center gap-2 rounded-3xl"
             onClick={handleClearAll}
           >
             Clear all
+            <span className="text-md">✖️</span>
           </button>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-md hover:btn-primary flex items-center gap-2 rounded-3xl"
             onClick={handleApply}
           >
             Apply
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-4 h-4 pt-0.5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707l-6.414 6.414A2 2 0 0013 14.586V19a1 1 0 01-1.447.894l-2-1A1 1 0 019 18v-3.414a2 2 0 00-.586-1.414L2 6.707A1 1 0 012 6V4z"
+              />
+            </svg>
           </button>
         </div>
       </div>

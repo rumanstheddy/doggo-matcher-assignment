@@ -13,9 +13,7 @@ export function DogRow({ dog, isFavourite, onToggleFavourite }: DogRowProps) {
       <td className="px-4 py-2 w-16 text-center">
         <button
           className={`btn btn-circle btn-sm mx-auto ${
-            isFavourite
-              ? "bg-primary text-white"
-              : "bg-base-200 text-base-content"
+            isFavourite ? "bg-primary  text-red-500" : "bg-base-200 text-white"
           }`}
           onClick={() => onToggleFavourite(dog.id)}
           aria-label={
@@ -24,11 +22,11 @@ export function DogRow({ dog, isFavourite, onToggleFavourite }: DogRowProps) {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill={isFavourite ? "currentColor" : "none"}
+            fill={isFavourite ? "#ef4444" : "none"}
             viewBox="0 0 24 24"
             strokeWidth="2.5"
             stroke="currentColor"
-            className="size-[1.1em]"
+            className="inline size-[1.2em]"
           >
             <path
               strokeLinecap="round"
