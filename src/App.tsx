@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router";
 import { useEffect } from "react";
 import { Login } from "./pages/login";
 import { Search } from "./pages/search";
+import { NotFound } from "./pages/notfound";
 import "./index.css";
 import { useAuthStatus } from "./hooks/useAuthStatus";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -35,6 +36,7 @@ function App() {
           <Route path="/" element={<AuthGate />} />
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
