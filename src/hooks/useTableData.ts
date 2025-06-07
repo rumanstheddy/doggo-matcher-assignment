@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchDogs, getDogsByIds } from "../api/dogApi";
 import { useSearchParams } from "react-router";
+import { usePagination } from "./usePagination";
 
 function getLocalStorageFavKey() {
   const name = localStorage.getItem("userName") || "default";
@@ -17,8 +18,9 @@ function setLocalStorageFavourites(ids: string[]) {
   localStorage.setItem(getLocalStorageFavKey(), JSON.stringify(ids));
 }
 
-export function useDogTableData() {
+export function useTableData() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { size, from, handlePaginationChange } = usePagination();
 
   const sortField = searchParams.get("sortField") || "breed";
   const sortDirection =
@@ -27,14 +29,30 @@ export function useDogTableData() {
     getLocalStorageFavourites()
   );
 
-  // Set default sort params in URL on first load if not present
+  // Set default sort and pagination params in URL on first load if not present
   useEffect(() => {
-    if (!searchParams.get("sortField") || !searchParams.get("sortDirection")) {
-      setSearchParams({
-        ...Object.fromEntries(searchParams),
-        sortField: sortField || "breed",
-        sortDirection: sortDirection || "asc",
-      });
+    const newParams: Record<string, string> = {
+      ...Object.fromEntries(searchParams),
+    };
+    let changed = false;
+    if (!searchParams.get("sortField")) {
+      newParams.sortField = sortField || "breed";
+      changed = true;
+    }
+    if (!searchParams.get("sortDirection")) {
+      newParams.sortDirection = sortDirection || "asc";
+      changed = true;
+    }
+    if (!searchParams.get("from")) {
+      newParams.from = "0";
+      changed = true;
+    }
+    if (!searchParams.get("size")) {
+      newParams.size = "25";
+      changed = true;
+    }
+    if (changed) {
+      setSearchParams(newParams);
     }
     setFavouriteIds(getLocalStorageFavourites());
   }, [searchParams, setSearchParams, sortField, sortDirection]);
@@ -55,20 +73,6 @@ export function useDogTableData() {
   );
 
   const sortParam = `${sortField}:${sortDirection}`;
-
-  // Pagination logic
-  let size = Number(searchParams.get("size") || 25);
-  if (size > 100) {
-    size = 100;
-    // If the URL param is > 100, update it to 100
-    if (searchParams.get("size") && Number(searchParams.get("size")) > 100) {
-      setSearchParams({
-        ...Object.fromEntries(searchParams),
-        size: "100",
-      });
-    }
-  }
-  const from = Number(searchParams.get("from") || 0);
 
   // Update: include 'from' and 'size' in the dog search query
   const {
@@ -131,14 +135,6 @@ export function useDogTableData() {
     setFavouriteIds(updated);
   }
 
-  function handlePageChange(page: number) {
-    setSearchParams({
-      ...Object.fromEntries(searchParams),
-      from: ((page - 1) * size).toString(),
-      size: size.toString(),
-    });
-  }
-
   return {
     sortField,
     sortDirection,
@@ -154,6 +150,6 @@ export function useDogTableData() {
     handleToggleFavourite,
     currentPage,
     totalPages,
-    handlePageChange,
+    handlePaginationChange,
   };
 }

@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router";
-import { useDogTableData } from "../hooks/useDogTableData";
+import { useTableData } from "../hooks/useTableData";
+import { useFavorites } from "../hooks/useFavorites";
 import { DogRow } from "./DogRow";
 import { SortableTableHeader } from "./SortableTableHeader";
 import { FavouriteTableHeader } from "./FavouriteTableHeader";
 import { ErrorMessageWithAction } from "./ErrorMessageWithAction";
 import { Pagination } from "./Pagination";
+import type { Dog } from "../api/dogApi";
 
 const SORTABLE_COLUMNS = [
   { key: "name", label: "Name" },
@@ -22,14 +24,18 @@ export function DogTable() {
     searchError,
     dogsError,
     dogs,
+    currentPage,
+    totalPages,
+    handlePaginationChange,
+  } = useTableData();
+
+  const allIds = (dogs as Dog[] | undefined)?.map((d) => d.id) || [];
+  const {
     favouriteIds,
     isAllFavourited,
     handleToggleAllFavourites,
     handleToggleFavourite,
-    currentPage,
-    totalPages,
-    handlePageChange,
-  } = useDogTableData();
+  } = useFavorites(allIds);
 
   const navigate = useNavigate();
 
@@ -75,10 +81,10 @@ export function DogTable() {
         </thead>
         <tbody>
           {dogs &&
-            dogs.map((dog) => (
+            (dogs as Dog[]).map((dog) => (
               <DogRow
                 key={dog.id}
-                dog={dog}
+                dog={dog as Dog}
                 isFavourite={favouriteIds.includes(dog.id)}
                 onToggleFavourite={handleToggleFavourite}
               />
@@ -88,7 +94,10 @@ export function DogTable() {
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={handlePageChange}
+        onPageChange={handlePaginationChange}
+        pageSize={
+          (dogs as Dog[]).length > 0 ? (dogs as Dog[]).length : undefined
+        }
       />
     </>
   );
