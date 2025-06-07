@@ -28,7 +28,7 @@ export function FavoriteDogList({ onRemove }: FavoritesDogListProps) {
     return <div className="p-4 text-gray-400">No favorites yet.</div>;
 
   return (
-    <ul className="flex flex-col gap-4 p-2">
+    <ul className="flex flex-col gap-8 mt-4 p-2">
       {dogs.map((dog) => (
         <FavoriteDog key={dog.id} dog={dog} onRemove={onRemove} />
       ))}

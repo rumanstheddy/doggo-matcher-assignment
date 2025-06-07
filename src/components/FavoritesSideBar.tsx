@@ -38,7 +38,7 @@ export function FavoritesSideBar() {
           className="drawer-overlay"
           onClick={closeDrawer}
         ></label>
-        <div className="relative bg-base-200 text-base-content min-h-full w-80 p-4">
+        <div className="relative bg-base-200 text-base-content min-h-full w-90 p-4">
           {/* Close button in the top right of the sidebar */}
           <button
             className="btn btn-circle text-2xl hover:btn-error hover:text-white pb-1 absolute top-2 right-2"
