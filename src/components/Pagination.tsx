@@ -63,7 +63,7 @@ export function Pagination({
   }
 
   return (
-    <div className="flex items-center gap-4 sticky bottom-4 z-50 my-4">
+    <div className="flex items-center gap-4 sticky bottom-2 z-50 my-4">
       <div className="flex items-center gap-2 justify-center bg-base-100 shadow-[0_-0_8px_0_rgba(0,0,0,0.7)] p-4 rounded-3xl">
         {/* Pagination controls */}
         <button

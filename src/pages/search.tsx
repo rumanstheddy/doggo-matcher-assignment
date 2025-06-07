@@ -3,6 +3,7 @@ import { useAuthStatus } from "../hooks/useAuthStatus";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import FavoritesSideBar from "../components/FavoritesSideBar";
+import MatchButton from "../components/MatchButton";
 
 export function Search() {
   const isAuthenticated = useAuthStatus();
@@ -27,6 +28,7 @@ export function Search() {
       <h1 className="text-3xl font-bold text-center my-10">Doggo Matcher 🐶</h1>
       <DogTableContainer />
       <FavoritesSideBar />
+      <MatchButton onClick={() => { /* TODO: Add match logic */ }} />
     </div>
   );
 }
