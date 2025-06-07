@@ -1,4 +1,4 @@
-import type { DogBreed } from "../../types/breeds";
+import type { DogBreed } from "../types/breeds";
 
 // Assign each breed a unique, accessible Tailwind semantic color (bg-.../text-.../border-...) for badges.
 // Border color now matches the background color for a subtle outline.

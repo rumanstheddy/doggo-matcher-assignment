@@ -1,4 +1,4 @@
-import { breedColorMap } from "../api/constants/breedColors";
+import { breedColorMap } from "../constants/breedColors";
 import type { DogBreed } from "../types/breeds";
 
 interface BreedBadgeProps {

@@ -19,6 +19,24 @@ export function useFavorites(allIds: string[] = []) {
     getLocalStorageFavourites()
   );
 
+  // Listen for localStorage changes (cross-tab and same-tab)
+  useEffect(() => {
+    const key = getLocalStorageFavKey();
+    function syncFavourites(e?: StorageEvent) {
+      // Only update if the right key changes (or if polling)
+      if (!e || e.key === key) {
+        setFavouriteIds(getLocalStorageFavourites());
+      }
+    }
+    window.addEventListener("storage", syncFavourites);
+    // Poll for same-tab changes
+    const interval = setInterval(() => syncFavourites(), 500);
+    return () => {
+      window.removeEventListener("storage", syncFavourites);
+      clearInterval(interval);
+    };
+  }, []);
+
   useEffect(() => {
     setFavouriteIds(getLocalStorageFavourites());
     // eslint-disable-next-line react-hooks/exhaustive-deps
