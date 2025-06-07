@@ -15,14 +15,17 @@ function setLocalStorageFavourites(ids: string[]) {
 }
 
 export function useFavorites(allIds: string[] = []) {
-  const [favouriteIds, setFavouriteIds] = useState<string[]>(getLocalStorageFavourites());
+  const [favouriteIds, setFavouriteIds] = useState<string[]>(
+    getLocalStorageFavourites()
+  );
 
   useEffect(() => {
     setFavouriteIds(getLocalStorageFavourites());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(allIds)]);
 
-  const isAllFavourited = allIds.length > 0 && allIds.every((id) => favouriteIds.includes(id));
+  const isAllFavourited =
+    allIds.length > 0 && allIds.every((id) => favouriteIds.includes(id));
 
   function handleToggleAllFavourites() {
     if (isAllFavourited) {

@@ -20,14 +20,37 @@ const DogFilters: React.FC<DogFiltersProps> = ({
   onMinAgeChange,
   onMaxAgeChange,
 }) => {
+  const [pendingBreeds, setPendingBreeds] =
+    React.useState<DogBreed[]>(selectedBreeds);
+  const [pendingMinAge, setPendingMinAge] = React.useState<number | null>(
+    minAge
+  );
+  const [pendingMaxAge, setPendingMaxAge] = React.useState<number | null>(
+    maxAge
+  );
+
+  const handleApply = () => {
+    setSelectedBreeds(pendingBreeds);
+    onMinAgeChange(pendingMinAge);
+    onMaxAgeChange(pendingMaxAge);
+  };
+
+  const handleClearAll = () => {
+    setPendingBreeds([]);
+    setPendingMinAge(null);
+    setPendingMaxAge(null);
+    setSelectedBreeds([]);
+    onMinAgeChange(null);
+    onMaxAgeChange(null);
+  };
+
   return (
     <>
       <div className="flex flex-wrap gap-4 items-end mb-4">
         <div>
-          {/* <label className="block text-sm font-medium mb-1">Breed</label> */}
           <BreedSelect
-            selectedBreeds={selectedBreeds}
-            setSelectedBreeds={setSelectedBreeds}
+            selectedBreeds={pendingBreeds}
+            setSelectedBreeds={setPendingBreeds}
           />
         </div>
         <div>
@@ -36,9 +59,9 @@ const DogFilters: React.FC<DogFiltersProps> = ({
             type="number"
             min={0}
             className="input input-bordered w-24"
-            value={minAge ?? ""}
+            value={pendingMinAge ?? ""}
             onChange={(e) =>
-              onMinAgeChange(e.target.value ? Number(e.target.value) : null)
+              setPendingMinAge(e.target.value ? Number(e.target.value) : null)
             }
             placeholder="Any"
           />
@@ -49,36 +72,39 @@ const DogFilters: React.FC<DogFiltersProps> = ({
             type="number"
             min={0}
             className="input input-bordered w-24"
-            value={maxAge ?? ""}
+            value={pendingMaxAge ?? ""}
             onChange={(e) =>
-              onMaxAgeChange(e.target.value ? Number(e.target.value) : null)
+              setPendingMaxAge(e.target.value ? Number(e.target.value) : null)
             }
             placeholder="Any"
           />
         </div>
-        <div className="flex-1 flex justify-end items-end">
+        <div className="flex-1 flex justify-end items-end gap-2">
           <button
             type="button"
-            className="btn btn-outline btn-error"
-            onClick={() => {
-              setSelectedBreeds([]);
-              onMinAgeChange(null);
-              onMaxAgeChange(null);
-            }}
+            className="btn btn-error text-white"
+            onClick={handleClearAll}
           >
-            Clear All Filters
+            Clear all
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleApply}
+          >
+            Apply
           </button>
         </div>
       </div>
-      {selectedBreeds.length > 0 && (
+      {pendingBreeds.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-2 max-w-full sm:max-w-screen md:max-w-8/12 lg:max-w-6/12 overflow-hidden">
-          {selectedBreeds.map((breed) => (
+          {pendingBreeds.map((breed) => (
             <BreedBadge
               key={breed}
               breed={breed}
               removable
               onRemove={() =>
-                setSelectedBreeds(selectedBreeds.filter((b) => b !== breed))
+                setPendingBreeds(pendingBreeds.filter((b) => b !== breed))
               }
             />
           ))}

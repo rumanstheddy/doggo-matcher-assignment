@@ -18,6 +18,11 @@ const SORTABLE_COLUMNS = [
 ];
 
 export function DogTable() {
+  // Filter state for DogFilters
+  const [selectedBreeds, setSelectedBreeds] = useState<DogBreed[]>([]);
+  const [minAge, setMinAge] = useState<number | null>(null);
+  const [maxAge, setMaxAge] = useState<number | null>(null);
+
   const {
     sortField,
     sortDirection,
@@ -30,7 +35,11 @@ export function DogTable() {
     currentPage,
     totalPages,
     handlePaginationChange,
-  } = useTableData();
+  } = useTableData({
+    selectedBreeds,
+    minAge,
+    maxAge,
+  });
 
   const allIds = (dogs as Dog[] | undefined)?.map((d) => d.id) || [];
   const {
@@ -41,11 +50,6 @@ export function DogTable() {
   } = useFavorites(allIds);
 
   const navigate = useNavigate();
-
-  // Filter state for DogFilters
-  const [selectedBreeds, setSelectedBreeds] = useState<DogBreed[]>([]);
-  const [minAge, setMinAge] = useState<number | null>(null);
-  const [maxAge, setMaxAge] = useState<number | null>(null);
 
   if (searchLoading || dogsLoading) return <div>Loading...</div>;
   if (searchError)

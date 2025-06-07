@@ -1,33 +1,22 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchDogs, getDogsByIds } from "../api/dogApi";
 import { useSearchParams } from "react-router";
 import { usePagination } from "./usePagination";
+import { useFavorites } from "./useFavorites";
+import type { DogBreed } from "../types/breeds";
 
-function getLocalStorageFavKey() {
-  const name = localStorage.getItem("userName") || "default";
-  const email = localStorage.getItem("userEmail") || "default";
-  return `favouriteDogIds_${name}_${email}`;
-}
-
-function getLocalStorageFavourites() {
-  return JSON.parse(localStorage.getItem(getLocalStorageFavKey()) || "[]");
-}
-
-function setLocalStorageFavourites(ids: string[]) {
-  localStorage.setItem(getLocalStorageFavKey(), JSON.stringify(ids));
-}
-
-export function useTableData() {
+export function useTableData(filters?: {
+  selectedBreeds?: DogBreed[];
+  minAge?: number | null;
+  maxAge?: number | null;
+}) {
   const [searchParams, setSearchParams] = useSearchParams();
   const { size, from, handlePaginationChange } = usePagination();
 
   const sortField = searchParams.get("sortField") || "breed";
   const sortDirection =
     searchParams.get("sortDirection") === "desc" ? "desc" : "asc";
-  const [favouriteIds, setFavouriteIds] = useState<string[]>(
-    getLocalStorageFavourites()
-  );
 
   // Set default sort and pagination params in URL on first load if not present
   useEffect(() => {
@@ -54,7 +43,6 @@ export function useTableData() {
     if (changed) {
       setSearchParams(newParams);
     }
-    setFavouriteIds(getLocalStorageFavourites());
   }, [searchParams, setSearchParams, sortField, sortDirection]);
 
   const handleSort = useCallback(
@@ -80,8 +68,29 @@ export function useTableData() {
     isLoading: searchLoading,
     error: searchError,
   } = useQuery({
-    queryKey: ["dogSearch", { sort: sortParam, from, size }],
-    queryFn: () => searchDogs({ sort: sortParam, from, size }),
+    queryKey: [
+      "dogSearch",
+      {
+        sort: sortParam,
+        from,
+        size,
+        breeds: filters?.selectedBreeds,
+        ageMin: filters?.minAge,
+        ageMax: filters?.maxAge,
+      },
+    ],
+    queryFn: () =>
+      searchDogs({
+        sort: sortParam,
+        from,
+        size,
+        breeds:
+          filters?.selectedBreeds && filters.selectedBreeds.length > 0
+            ? filters.selectedBreeds
+            : undefined,
+        ageMin: filters?.minAge ?? undefined,
+        ageMax: filters?.maxAge ?? undefined,
+      }),
   });
 
   const total = searchResult?.total || 0;
@@ -102,38 +111,14 @@ export function useTableData() {
     enabled: !!searchResult,
   });
 
-  useEffect(() => {
-    setFavouriteIds(getLocalStorageFavourites());
-  }, [dogs]);
-
+  // Use useFavorites for allIds
   const allIds = dogs?.map((d) => d.id) || [];
-  const isAllFavourited =
-    allIds.length > 0 && allIds.every((id) => favouriteIds.includes(id));
-
-  function handleToggleAllFavourites() {
-    if (isAllFavourited) {
-      // Remove all current page dogs from favourites
-      const updated = favouriteIds.filter((id) => !allIds.includes(id));
-      setLocalStorageFavourites(updated);
-      setFavouriteIds(updated);
-    } else {
-      // Add all current page dogs to favourites
-      const updated = Array.from(new Set([...favouriteIds, ...allIds]));
-      setLocalStorageFavourites(updated);
-      setFavouriteIds(updated);
-    }
-  }
-
-  function handleToggleFavourite(id: string) {
-    let updated;
-    if (favouriteIds.includes(id)) {
-      updated = favouriteIds.filter((favId) => favId !== id);
-    } else {
-      updated = [...favouriteIds, id];
-    }
-    setLocalStorageFavourites(updated);
-    setFavouriteIds(updated);
-  }
+  const {
+    favouriteIds,
+    isAllFavourited,
+    handleToggleAllFavourites,
+    handleToggleFavourite,
+  } = useFavorites(allIds);
 
   return {
     sortField,
