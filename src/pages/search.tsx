@@ -1,4 +1,4 @@
-import { DogTable } from "../components/DogTable";
+import { DogTableContainer } from "../components/DogTableContainer";
 import { useAuthStatus } from "../hooks/useAuthStatus";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -23,12 +23,8 @@ export function Search() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold text-center my-10">
-        Doggo Matcher 🐶
-      </h1>
-      <DogTable />
+      <h1 className="text-3xl font-bold text-center my-10">Doggo Matcher 🐶</h1>
+      <DogTableContainer />
     </div>
   );
 }
-
-// I want to implement a search bar where users can select amongst different dog breeds and filter the results based on the selected breeds. I will worry about the filtering later

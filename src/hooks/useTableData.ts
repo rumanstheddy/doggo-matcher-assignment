@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchDogs, getDogsByIds } from "../api/dogApi";
 import { useSearchParams } from "react-router";
@@ -44,6 +44,44 @@ export function useTableData(filters?: {
       setSearchParams(newParams);
     }
   }, [searchParams, setSearchParams, sortField, sortDirection]);
+
+  // Only reset to first page (from=0) when filters actually change
+  const prevFiltersRef = useRef<{
+    selectedBreeds?: DogBreed[];
+    minAge?: number | null;
+    maxAge?: number | null;
+  }>({});
+  const isFirstRun = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+    } else {
+      const prev = prevFiltersRef.current;
+      const breedsChanged =
+        JSON.stringify(prev.selectedBreeds || []) !==
+        JSON.stringify(filters?.selectedBreeds || []);
+      const minAgeChanged = prev.minAge !== filters?.minAge;
+      const maxAgeChanged = prev.maxAge !== filters?.maxAge;
+      if (breedsChanged || minAgeChanged || maxAgeChanged) {
+        setSearchParams((prevParams) => {
+          const params = { ...Object.fromEntries(prevParams) };
+          params.from = "0";
+          return params;
+        });
+      }
+    }
+    prevFiltersRef.current = {
+      selectedBreeds: filters?.selectedBreeds,
+      minAge: filters?.minAge,
+      maxAge: filters?.maxAge,
+    };
+  }, [
+    filters?.selectedBreeds,
+    filters?.minAge,
+    filters?.maxAge,
+    setSearchParams,
+  ]);
 
   const handleSort = useCallback(
     (field: string) => {

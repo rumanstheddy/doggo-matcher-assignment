@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BreedSelect } from "./BreedSelect";
 import { BreedBadge } from "./BreedBadge";
 import type { DogBreed } from "../types/breeds";
