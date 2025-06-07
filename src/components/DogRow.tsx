@@ -1,4 +1,5 @@
 import type { Dog } from "../api/dogApi";
+import { BreedBadge } from "./BreedBadge";
 
 interface DogRowProps {
   dog: Dog;
@@ -49,7 +50,7 @@ export function DogRow({ dog, isFavourite, onToggleFavourite }: DogRowProps) {
         {dog.age}
       </td>
       <td className="px-4 py-2 w-32 sm:w-36 md:w-40 lg:w-48 xl:w-56">
-        {dog.breed}
+        <BreedBadge breed={dog.breed} />
       </td>
       <td className="px-4 py-2 w-28 sm:w-32 md:w-36 lg:w-40 xl:w-44">
         {dog.zip_code}
