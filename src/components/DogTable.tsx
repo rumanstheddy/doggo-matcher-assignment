@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useTableData } from "../hooks/useTableData";
 import { useFavorites } from "../hooks/useFavorites";
@@ -6,7 +7,9 @@ import { SortableTableHeader } from "./SortableTableHeader";
 import { FavouriteTableHeader } from "./FavouriteTableHeader";
 import { ErrorMessageWithAction } from "./ErrorMessageWithAction";
 import { Pagination } from "./Pagination";
+import DogFilters from "./DogFilters";
 import type { Dog } from "../api/dogApi";
+import type { DogBreed } from "../types/breeds";
 
 const SORTABLE_COLUMNS = [
   { key: "name", label: "Name" },
@@ -39,6 +42,11 @@ export function DogTable() {
 
   const navigate = useNavigate();
 
+  // Filter state for DogFilters
+  const [selectedBreeds, setSelectedBreeds] = useState<DogBreed[]>([]);
+  const [minAge, setMinAge] = useState<number | null>(null);
+  const [maxAge, setMaxAge] = useState<number | null>(null);
+
   if (searchLoading || dogsLoading) return <div>Loading...</div>;
   if (searchError)
     return (
@@ -57,6 +65,14 @@ export function DogTable() {
 
   return (
     <>
+      <DogFilters
+        selectedBreeds={selectedBreeds}
+        setSelectedBreeds={setSelectedBreeds}
+        minAge={minAge}
+        maxAge={maxAge}
+        onMinAgeChange={setMinAge}
+        onMaxAgeChange={setMaxAge}
+      />
       <table className="table w-full max-w-3xl border border-base-300 rounded-3xl overflow-hidden shadow-lg mt-4">
         <thead>
           <tr className="bg-base-200">
