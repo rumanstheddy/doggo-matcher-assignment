@@ -1,6 +1,6 @@
 import { DogRow } from "./DogRow";
 import { SortableTableHeader } from "./SortableTableHeader";
-import { FavouriteTableHeader } from "./FavouriteTableHeader";
+import { FavoriteTableHeader } from "./FavoriteTableHeader";
 import type { Dog } from "../api/dogApi";
 
 const SORTABLE_COLUMNS = [
@@ -34,7 +34,7 @@ export function DogTable({
     <table className="table w-full max-w-3xl border border-base-300 rounded-3xl overflow-hidden shadow-lg mt-4">
       <thead>
         <tr className="bg-base-200">
-          <FavouriteTableHeader
+          <FavoriteTableHeader
             onClick={handleToggleAllFavourites}
             isAllFavourited={isAllFavourited}
           />

@@ -6,6 +6,7 @@ import { NotFound } from "./pages/notfound";
 import "./index.css";
 import { useAuthStatus } from "./hooks/useAuthStatus";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import MatchPage from "./pages/match";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function App() {
         <Routes>
           <Route path="/" element={<AuthGate />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/match" element={<MatchPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
