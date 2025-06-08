@@ -70,10 +70,16 @@ export function useFavorites(allIds: string[] = []) {
     setFavouriteIds(updated);
   }
 
+  function removeAllFavourites() {
+    setLocalStorageFavourites([]);
+    setFavouriteIds([]);
+  }
+
   return {
     favouriteIds,
     isAllFavourited,
     handleToggleAllFavourites,
     handleToggleFavourite,
+    removeAllFavourites,
   };
 }

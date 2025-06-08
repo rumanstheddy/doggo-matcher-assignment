@@ -1,5 +1,5 @@
 // Add a new header for the favourite button
-export function FavouriteTableHeader({
+export function FavoriteTableHeader({
   onClick,
   isAllFavourited,
 }: {

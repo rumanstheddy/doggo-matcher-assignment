@@ -6,7 +6,7 @@ import { useFavorites } from "../hooks/useFavorites";
 export function FavoritesSideBar() {
   // Use a ref to control the drawer checkbox
   const drawerRef = useRef<HTMLInputElement>(null);
-  const { handleToggleFavourite } = useFavorites();
+  const { handleToggleFavourite, favouriteIds, removeAllFavourites } = useFavorites();
 
   // Handler to open the drawer
   const openDrawer = () => {
@@ -41,7 +41,7 @@ export function FavoritesSideBar() {
         <div className="relative bg-base-200 text-base-content min-h-full w-90 p-4">
           {/* Close button in the top right of the sidebar */}
           <button
-            className="btn btn-circle text-2xl hover:btn-error hover:text-white pb-1 absolute top-2 right-2"
+            className="btn btn-sm btn-circle text-2xl hover:btn-error hover:text-white pb-1 absolute top-4 right-4"
             aria-label="Close sidebar"
             onClick={closeDrawer}
             type="button"
@@ -49,7 +49,18 @@ export function FavoritesSideBar() {
             ×
           </button>
           <ul className="menu">
-            <li className="font-bold text-lg mb-2">Your Favorites</li>
+            <li className="font-bold text-lg mb-2 flex flex-row items-center justify-between">
+              <span>Your Favorites</span>
+              <button
+              // btn hover:btn-error text-base-content flex items-center gap-2 
+                className="btn btn-sm btn-error ml-2 hover:text-white rounded-3xl"
+                onClick={removeAllFavourites}
+                disabled={favouriteIds.length === 0}
+                type="button"
+              >
+                Clear all
+              </button>
+            </li>
           </ul>
           <FavoriteDogList onRemove={handleToggleFavourite} />
         </div>

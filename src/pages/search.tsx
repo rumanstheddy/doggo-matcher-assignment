@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import FavoritesSideBar from "../components/FavoritesSideBar";
 import MatchButton from "../components/MatchButton";
+import { logout } from "../api/authApi";
 
 export function Search() {
   const isAuthenticated = useAuthStatus();
@@ -25,10 +26,28 @@ export function Search() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-3xl font-bold text-center my-10">Doggo Matcher 🐶</h1>
+      <button
+        className="absolute top-16 right-24 btn btn-error text-white z-50"
+        onClick={async () => {
+          try {
+            await logout();
+            navigate("/login", { replace: true });
+          } catch (e) {
+            console.error("Logout failed:", e);
+            alert("Logout failed. Please try again.");
+          }
+        }}
+      >
+        Logout
+      </button>
+      <h1 className="text-3xl font-bold text-center my-10 mt-16">
+        🎲 Doggo Matcher 🐶
+      </h1>
       <DogTableContainer />
       <FavoritesSideBar />
-      <MatchButton onClick={() => { /* TODO: Add match logic */ }} />
+      <div className="fixed right-48 bottom-6 z-50">
+        <MatchButton onClick={() => navigate("/match")} />
+      </div>
     </div>
   );
 }

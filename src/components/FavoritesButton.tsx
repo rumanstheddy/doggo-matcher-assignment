@@ -14,7 +14,7 @@ export function FavoritesButton({ onClick }: FavoritesButtonProps) {
   }, [favouriteIds]);
 
   return (
-    <div className="fixed right-24 bottom-8 z-50 indicator">
+    <div className="fixed right-24 bottom-9 z-50 indicator">
       {count > 0 && (
         <span className="indicator-item badge badge-error">
           {count}
