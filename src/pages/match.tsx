@@ -62,7 +62,7 @@ const MatchPage: React.FC = () => {
     : null;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-base-200 p-4 relative w-full">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative w-full">
       <Link
         to="/search"
         className="absolute left-16 top-16 text-blue-600 hover:underline text-base font-medium"
@@ -70,11 +70,11 @@ const MatchPage: React.FC = () => {
       >
         ← Back to Search
       </Link>
-      <h1 className="text-3xl font-bold text-center my-10">
+      <h1 className="text-3xl font-bold text-center mb-10 mt-12">
         🎲 Doggo Matcher 🐶
       </h1>
-      <div className="text-xl text-center mb-8 font-semibold">
-        Click on the button below to match with a fur friend ❤️
+      <div className="text-md text-center mb-8">
+        Click 👇 to match with a fur friend ❤️
       </div>
       <div className="mb-10">
         <MatchButton onClick={handleMatch} />

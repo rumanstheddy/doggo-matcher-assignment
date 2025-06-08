@@ -40,9 +40,13 @@ export function Search() {
       >
         Logout
       </button>
-      <h1 className="text-3xl font-bold text-center my-10 mt-16">
+      <h1 className="text-3xl font-bold text-center mb-10 mt-16">
         🎲 Doggo Matcher 🐶
       </h1>
+      <p className="text-center text-md text-white mb-8 max-w-xl">
+        Search through adorable dogs, add your favorites, and click the Match 🐾
+        button to discover your perfect doggo companion!
+      </p>
       <DogTableContainer />
       <FavoritesSideBar />
       <div className="fixed right-48 bottom-6 z-50">

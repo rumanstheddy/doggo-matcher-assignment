@@ -46,7 +46,7 @@ const DogFilters: React.FC<DogFiltersProps> = ({
 
   return (
     <>
-      <div className="flex flex-wrap gap-4 items-end mb-4">
+      <div className="flex flex-wrap gap-4 items-end my-4">
         <div className="flex flex-wrap gap-4 items-end mb-4">
           <div>
             <BreedSelect

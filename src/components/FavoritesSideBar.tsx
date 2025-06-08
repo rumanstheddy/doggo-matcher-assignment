@@ -50,9 +50,8 @@ export function FavoritesSideBar() {
           </button>
           <ul className="menu">
             <li className="font-bold text-lg mb-2 flex flex-row items-center justify-between">
-              <span>Your Favorites</span>
+              <span className="cursor-default hover:bg-transparent focus:bg-transparent active:bg-transparent">Your Favorites</span>
               <button
-              // btn hover:btn-error text-base-content flex items-center gap-2 
                 className="btn btn-sm btn-error ml-2 hover:text-white rounded-3xl"
                 onClick={removeAllFavourites}
                 disabled={favouriteIds.length === 0}
