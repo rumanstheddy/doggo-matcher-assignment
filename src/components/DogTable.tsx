@@ -50,7 +50,9 @@ export function DogTable({
               onClick={() => handleSort(col.key)}
             />
           ))}
-          <th className="border-b border-base-300 px-4 py-2">Zip Code</th>
+          <th className="py-2 w-32 sm:w-36 md:w-40 lg:w-48 xl:w-56">
+            Zip Code
+          </th>
         </tr>
       </thead>
       <tbody>
