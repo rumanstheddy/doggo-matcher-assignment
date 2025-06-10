@@ -1,5 +1,6 @@
 import { BreedBadge } from "./BreedBadge";
 import type { Dog } from "../api/dogApi";
+import CloseIconButton from "./CloseIconButton";
 
 interface FavoriteDogProps {
   dog: Dog;
@@ -10,14 +11,11 @@ export function FavoriteDog({ dog, onRemove }: FavoriteDogProps) {
   return (
     <li className="indicator card bg-base-100 shadow-xl border border-base-200 flex flex-row items-center gap-6 p-4 min-h-[5.5rem] min-w-[260px]">
       <div className="indicator-item indicator-top right-2">
-        <button
-          className="btn btn-sm btn-circle btn-error text-white hover:scale-110 transition-transform text-2xl pb-1"
-          aria-label={`Remove ${dog.name} from favorites`}
+        <CloseIconButton
+          className="btn btn-xs btn-circle btn-error text-white hover:scale-105 transition-transform text-lg pb-1"
           onClick={() => onRemove(dog.id)}
-          type="button"
-        >
-          ×
-        </button>
+          aria-label="Close"
+        />
       </div>
       <img
         src={dog.img}

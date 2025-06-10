@@ -3,6 +3,7 @@ import type { DogBreed } from "../types/breeds";
 import { ALL_BREEDS } from "../types/breeds";
 import { BreedBadge } from "./BreedBadge";
 import { useCloseOnBlurOrEscape } from "../hooks/useCloseOnBlurOrEscape";
+import CloseIconButton from "./CloseIconButton";
 
 interface BreedSelectModalProps {
   input: string;
@@ -64,16 +65,14 @@ export function BreedSelectModal({
           >
             Clear all
           </button>
-          <button
-            className="btn btn-circle text-2xl hover:btn-error hover:text-white pb-1"
+          <CloseIconButton
+            className="btn btn-circle btn-sm text-2xl btn-error text-white pb-1 hover:scale-105"
             onClick={() => {
               setSelectedBreeds(pendingBreeds);
               onClose();
             }}
             aria-label="Close"
-          >
-            ×
-          </button>
+          />
         </div>
         <input
           className="input w-full text-lg py-4 mb-4 focus:input-primary rounded-2xl"

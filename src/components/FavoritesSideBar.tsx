@@ -3,6 +3,7 @@ import FavoritesButton from "./FavoritesButton";
 import FavoriteDogList from "./FavoriteDogList";
 import { useFavorites } from "../hooks/useFavorites";
 import { useCloseOnBlurOrEscape } from "../hooks/useCloseOnBlurOrEscape";
+import CloseIconButton from "./CloseIconButton";
 
 export function FavoritesSideBar() {
   // Use a ref to control the drawer checkbox
@@ -49,14 +50,11 @@ export function FavoritesSideBar() {
           className="relative bg-base-200 text-base-content min-h-full w-90 p-4"
         >
           {/* Close button in the top right of the sidebar */}
-          <button
-            className="btn btn-sm btn-circle text-2xl hover:btn-error hover:text-white pb-1 absolute top-4 right-4"
+          <CloseIconButton
+            className="absolute top-4 right-4 btn btn-sm btn-circle text-2xl btn-error text-white pb-1 hover:scale-105"
             aria-label="Close sidebar"
             onClick={closeDrawer}
-            type="button"
-          >
-            ×
-          </button>
+          />
           <ul className="menu">
             <li className="font-bold text-lg mb-2 flex flex-row items-center justify-between">
               <span className="cursor-default hover:bg-transparent focus:bg-transparent active:bg-transparent">
