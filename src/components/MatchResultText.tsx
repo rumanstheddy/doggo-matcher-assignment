@@ -1,15 +1,19 @@
 import type { Dog } from "../api/dogApi";
 
 export function MatchResultText({
+  text,
   loading,
   matchedDog,
+  className = "",
 }: {
+  text: string;
   loading: boolean;
   matchedDog: Dog | null;
+  className?: string;
 }) {
   return (
-    <div className="mb-6 text-3xl font-semibold flex items-center justify-center min-h-[48px]">
-      Your match is...{" "}
+    <div className={className}>
+      {text}
       {loading ? (
         <span className="ml-4 w-32 h-8 rounded skeleton"></span>
       ) : matchedDog ? (

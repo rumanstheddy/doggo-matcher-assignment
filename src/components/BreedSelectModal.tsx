@@ -57,14 +57,7 @@ export function BreedSelectModal({
         <div className="pointer-events-none absolute left-0 top-0 w-full h-6 z-10 bg-gradient-to-b from-black/10 to-transparent rounded-t-2xl" />
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Select Dog Breeds</h2>
-          <button
-            className="btn btn-sm btn-error ml-2 hover:text-white rounded-3xl"
-            onClick={handleClearAll}
-            type="button"
-            disabled={pendingBreeds.length === 0}
-          >
-            Clear all
-          </button>
+
           <CloseIconButton
             className="btn btn-circle btn-sm text-2xl btn-error text-white pb-1 hover:scale-105"
             onClick={() => {
@@ -111,9 +104,19 @@ export function BreedSelectModal({
           <div className="pointer-events-none absolute left-0 bottom-0 w-full h-6 z-10 bg-gradient-to-t from-black/10 to-transparent rounded-b-2xl" />
         </div>
         <div className="mt-6">
-          <span className="font-semibold block">
-            Filters ready to be applied:
-          </span>
+          <div className="flex items-center justify-between">
+            <span className="font-semibold block">
+              Filters ready to be applied:
+            </span>
+            <button
+              className="btn btn-sm btn-error ml-2 hover:text-white rounded-3xl"
+              onClick={handleClearAll}
+              type="button"
+              disabled={pendingBreeds.length === 0}
+            >
+              Clear all
+            </button>
+          </div>
           {pendingBreeds.length > 0 && (
             <ul className="flex flex-wrap gap-2 mt-6 items-center">
               {pendingBreeds.map((breed) => (

@@ -34,9 +34,14 @@ export function MatchModal({
       {/* Close button in the top right of the modal overlay */}
       {/* Result text above the card, transparent bg */}
       <div className="px-6 py-3 rounded-xl bg-base-100/0 shadow-lg text-center">
-        <MatchResultText loading={isAnimating} matchedDog={matchedDog} />
+        <MatchResultText
+          text="You matched with..."
+          className="text-3xl font-semibold flex items-center justify-center min-h-[48px]"
+          loading={isAnimating}
+          matchedDog={matchedDog}
+        />
       </div>
-      <div className="bg-base-100 rounded-xl shadow-lg p-6 mt-2 bg-base-100/0 flex flex-col items-center">
+      <div className="rounded-xl shadow-lg p-6 mt-2 bg-base-100/0 flex flex-col items-center">
         {currentDog ? (
           <DogCard dog={currentDog} />
         ) : (
