@@ -2,20 +2,26 @@ import { useRef } from "react";
 import FavoritesButton from "./FavoritesButton";
 import FavoriteDogList from "./FavoriteDogList";
 import { useFavorites } from "../hooks/useFavorites";
+import { useCloseOnBlurOrEscape } from "../hooks/useCloseOnBlurOrEscape";
 
 export function FavoritesSideBar() {
   // Use a ref to control the drawer checkbox
-  const drawerRef = useRef<HTMLInputElement>(null);
-  const { handleToggleFavourite, favouriteIds, removeAllFavourites } = useFavorites();
+  const drawerToggleRef = useRef<HTMLInputElement>(null);
+  const sidebarContentRef = useRef<HTMLDivElement>(null);
+  const { handleToggleFavourite, favouriteIds, removeAllFavourites } =
+    useFavorites();
 
   // Handler to open the drawer
   const openDrawer = () => {
-    if (drawerRef.current) drawerRef.current.checked = true;
+    if (drawerToggleRef.current) drawerToggleRef.current.checked = true;
   };
   // Handler to close the drawer
   const closeDrawer = () => {
-    if (drawerRef.current) drawerRef.current.checked = false;
+    if (drawerToggleRef.current) drawerToggleRef.current.checked = false;
   };
+
+  // Add close on blur or escape functionality
+  useCloseOnBlurOrEscape(sidebarContentRef, closeDrawer);
 
   return (
     <div className="drawer drawer-end">
@@ -23,7 +29,7 @@ export function FavoritesSideBar() {
         id="favorites-drawer"
         type="checkbox"
         className="drawer-toggle"
-        ref={drawerRef}
+        ref={drawerToggleRef}
       />
       <div className="drawer-content">
         {/* The button toggles the drawer by clicking the label */}
@@ -38,7 +44,10 @@ export function FavoritesSideBar() {
           className="drawer-overlay"
           onClick={closeDrawer}
         ></label>
-        <div className="relative bg-base-200 text-base-content min-h-full w-90 p-4">
+        <div
+          ref={sidebarContentRef}
+          className="relative bg-base-200 text-base-content min-h-full w-90 p-4"
+        >
           {/* Close button in the top right of the sidebar */}
           <button
             className="btn btn-sm btn-circle text-2xl hover:btn-error hover:text-white pb-1 absolute top-4 right-4"
@@ -50,7 +59,9 @@ export function FavoritesSideBar() {
           </button>
           <ul className="menu">
             <li className="font-bold text-lg mb-2 flex flex-row items-center justify-between">
-              <span className="cursor-default hover:bg-transparent focus:bg-transparent active:bg-transparent">Your Favorites</span>
+              <span className="cursor-default hover:bg-transparent focus:bg-transparent active:bg-transparent">
+                Your Favorites
+              </span>
               <button
                 className="btn btn-sm btn-error ml-2 hover:text-white rounded-3xl"
                 onClick={removeAllFavourites}

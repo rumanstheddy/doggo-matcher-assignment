@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useModalClose(ref: React.RefObject<HTMLDivElement | null>, onClose: () => void) {
+export function useCloseOnBlurOrEscape(ref: React.RefObject<HTMLDivElement | null>, onClose: () => void) {
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {

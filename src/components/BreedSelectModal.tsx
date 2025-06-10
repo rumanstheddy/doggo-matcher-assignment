@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import type { DogBreed } from "../types/breeds";
 import { ALL_BREEDS } from "../types/breeds";
 import { BreedBadge } from "./BreedBadge";
-import { useModalClose } from "../hooks/useModalClose";
+import { useCloseOnBlurOrEscape } from "../hooks/useCloseOnBlurOrEscape";
 
 interface BreedSelectModalProps {
   input: string;
@@ -26,7 +26,7 @@ export function BreedSelectModal({
   const [pendingBreeds, setPendingBreeds] =
     useState<DogBreed[]>(selectedBreeds);
 
-  useModalClose(modalRef, () => {
+  useCloseOnBlurOrEscape(modalRef, () => {
     setSelectedBreeds(pendingBreeds);
     onClose();
   });
