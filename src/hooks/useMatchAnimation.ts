@@ -1,15 +1,19 @@
 import { useState, useRef, useEffect } from "react";
 import type { Dog } from "../api/dogApi";
+import type { Location } from "../api/locationApi";
 
 export function useMatchAnimation(
   dogs: Dog[],
   matchDogId: string | null,
-  duration = 2500,
-  interval = 150
+  animationDuration = 2500,
+  animationInterval = 150,
+  getLocation?: (dog: Dog) => Location | undefined
 ) {
   const [currentDog, setCurrentDog] = useState<Dog | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [matchedDog, setMatchedDog] = useState<Dog | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<Location | undefined>(undefined);
+  const [matchedLocation, setMatchedLocation] = useState<Location | undefined>(undefined);
   const timerRef = useRef<number | null>(null);
   const timeoutRef = useRef<number | null>(null);
 
@@ -29,19 +33,25 @@ export function useMatchAnimation(
     clearTimers(); // Prevent multiple intervals
     setIsAnimating(true);
     setMatchedDog(null);
+    setMatchedLocation(undefined);
     if (!dogs.length) return;
+    let i = 0;
     timerRef.current = window.setInterval(() => {
-      const randomDog = dogs[Math.floor(Math.random() * dogs.length)];
-      setCurrentDog(randomDog);
-    }, interval);
+      const dog = dogs[i % dogs.length];
+      setCurrentDog(dog);
+      setCurrentLocation(getLocation ? getLocation(dog) : undefined);
+      i++;
+    }, animationInterval);
 
     timeoutRef.current = window.setTimeout(() => {
       clearTimers();
-      const match = matchDogId ? dogs.find((d) => d.id === matchDogId) : null;
-      setMatchedDog(match || null);
-      setCurrentDog(match || null); // Ensure currentDog is set to matchedDog at the end
+      const dog = dogs.find((d) => d.id === matchDogId) || null;
+      setCurrentDog(dog);
+      setMatchedDog(dog);
       setIsAnimating(false);
-    }, duration);
+      setCurrentLocation(getLocation && dog ? getLocation(dog) : undefined);
+      setMatchedLocation(getLocation && dog ? getLocation(dog) : undefined);
+    }, animationDuration);
   };
 
   // Cleanup on unmount
@@ -51,5 +61,5 @@ export function useMatchAnimation(
     };
   }, []);
 
-  return { currentDog, isAnimating, startAnimation, matchedDog };
+  return { currentDog, isAnimating, matchedDog, currentLocation, matchedLocation, startAnimation };
 }

@@ -3,6 +3,17 @@ import { MatchResultText } from "./MatchResultText";
 import { useMatchAnimation } from "../hooks/useMatchAnimation";
 import type { Dog } from "../api/dogApi";
 import DogCard from "./DogCard";
+import type { Location } from "../api/locationApi";
+
+interface MatchModalProps {
+  open: boolean;
+  onClose: () => void;
+  dogs: Dog[];
+  matchDogId: string | null;
+  animationDuration?: number;
+  animationInterval?: number;
+  getLocation?: (dog: Dog) => Location | undefined;
+}
 
 export function MatchModal({
   open,
@@ -11,14 +22,8 @@ export function MatchModal({
   matchDogId,
   animationDuration = 2500,
   animationInterval = 150,
-}: {
-  open: boolean;
-  onClose: () => void;
-  dogs: Dog[];
-  matchDogId: string | null;
-  animationDuration?: number;
-  animationInterval?: number;
-}) {
+  getLocation,
+}: MatchModalProps) {
   const { currentDog, isAnimating, startAnimation, matchedDog } =
     useMatchAnimation(dogs, matchDogId, animationDuration, animationInterval);
 
@@ -43,7 +48,10 @@ export function MatchModal({
       </div>
       <div className="rounded-xl shadow-lg p-6 mt-2 bg-base-100/0 flex flex-col items-center">
         {currentDog ? (
-          <DogCard dog={currentDog} />
+          <DogCard
+            dog={currentDog}
+            location={getLocation ? getLocation(currentDog) : undefined}
+          />
         ) : (
           <div className="w-64 h-64 skeleton rounded-xl" />
         )}

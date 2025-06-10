@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useFavorites } from "../hooks/useFavorites";
-import { getDogsByIds, matchDogs, type Dog } from "../api/dogApi";
+import { matchDogs } from "../api/dogApi";
 import DogCardList from "../components/DogCardList";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
 import MatchButton from "../components/MatchButton";
 import { MatchModal } from "../components/MatchModal";
 import { MatchResultText } from "../components/MatchResultText";
+import { useDogDetails } from "../hooks/useDogDetails";
 
 const HIGHLIGHT_ANIMATION_DURATION = 2500; // ms
 const HIGHLIGHT_INTERVAL = 150; // ms
@@ -18,12 +18,8 @@ const MatchPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isMatching, setIsMatching] = useState(false);
 
-  // Fetch all favorite dogs
-  const { data: dogs = [] } = useQuery<Dog[]>({
-    queryKey: ["favoriteDogs", favouriteIds],
-    queryFn: () => getDogsByIds(favouriteIds),
-    enabled: favouriteIds.length > 0,
-  });
+  // Use custom hook to get dogs and their locations
+  const { dogs, dogLocations, error: dogDetailsError } = useDogDetails(favouriteIds);
 
   // Find the matched dog object
   const matchedDog =
@@ -85,7 +81,7 @@ const MatchPage: React.FC = () => {
             />
             <button
               type="button"
-              className="btn btn-circle text-xl btn-primary mt-2"
+              className="btn btn-circle text-xl btn-primary my-4"
               onClick={handleReset}
               disabled={isMatching}
             >
@@ -101,8 +97,14 @@ const MatchPage: React.FC = () => {
           </>
         )}
       </div>
-      {error && <div className="alert alert-error mb-4">{error}</div>}
-      <DogCardList dogs={dogs} highlightDogId={matchedDogId || undefined} />
+      {(error || dogDetailsError) && (
+        <div className="alert alert-error mb-4">{error || String(dogDetailsError)}</div>
+      )}
+      <DogCardList
+        dogs={dogs}
+        highlightDogId={matchedDogId || undefined}
+        getLocation={(dog) => dogLocations[dog.zip_code]}
+      />
       <MatchModal
         open={showModal}
         onClose={() => setShowModal(false)}
@@ -110,6 +112,7 @@ const MatchPage: React.FC = () => {
         matchDogId={matchedDogId}
         animationDuration={HIGHLIGHT_ANIMATION_DURATION}
         animationInterval={HIGHLIGHT_INTERVAL}
+        getLocation={(dog) => dogLocations[dog.zip_code]}
       />
     </div>
   );
