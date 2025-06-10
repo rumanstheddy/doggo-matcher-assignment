@@ -33,11 +33,6 @@ This project was built with React, TypeScript, and Vite.
    ```
    - The app will be available at [http://localhost:5173](http://localhost:5173) by default.
 
-5. **Build for production:**
-   ```sh
-   npm run build
-   ```
-
 6. **Preview the production build:**
    ```sh
    npm run preview
