@@ -5,19 +5,15 @@ import DogCardList from "../components/DogCardList";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
 import MatchButton from "../components/MatchButton";
+import { MatchModal } from "../components/MatchModal";
 
 const HIGHLIGHT_ANIMATION_DURATION = 2500; // ms
 const HIGHLIGHT_INTERVAL = 150; // ms
 
-// Add this to the top of the file or in your global CSS
-// @keyframes fade-in { from { opacity: 0; transform: scale(0.95);} to { opacity: 1; transform: scale(1);} }
-// .animate-fade-in { animation: fade-in 0.7s; }
-
 const MatchPage: React.FC = () => {
   const { favouriteIds } = useFavorites();
   const [matchedDogId, setMatchedDogId] = useState<string | null>(null);
-  const [highlightDogId, setHighlightDogId] = useState<string | null>(null);
-  const [loadingMatch, setLoadingMatch] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch all favorite dogs
@@ -27,39 +23,19 @@ const MatchPage: React.FC = () => {
     enabled: favouriteIds.length > 0,
   });
 
-  // Gacha animation: highlight random dogs before showing the real match
+  // Handle match button click
   const handleMatch = async () => {
     setError(null);
-    setLoadingMatch(true);
+    setShowModal(true);
     setMatchedDogId(null);
-    setHighlightDogId(null);
-    if (!dogs.length) return;
-    const dogIds = dogs.map((d) => d.id);
-    const highlightSequence: string[] = [];
-    const intervalTimer = setInterval(() => {
-      const randomId = dogIds[Math.floor(Math.random() * dogIds.length)];
-      setHighlightDogId(randomId);
-      highlightSequence.push(randomId);
-    }, HIGHLIGHT_INTERVAL);
-
-    setTimeout(async () => {
-      clearInterval(intervalTimer);
-      try {
-        const result = await matchDogs(favouriteIds);
-        setMatchedDogId(result.match);
-        setHighlightDogId(result.match);
-      } catch {
-        setError("Failed to find a match. Please try again.");
-      } finally {
-        setLoadingMatch(false);
-      }
-    }, HIGHLIGHT_ANIMATION_DURATION);
+    try {
+      const result = await matchDogs(favouriteIds);
+      setMatchedDogId(result.match);
+    } catch {
+      setError("Failed to find a match. Please try again.");
+      setShowModal(false);
+    }
   };
-
-  // Find the matched dog's name
-  const matchedDog = matchedDogId
-    ? dogs.find((d) => d.id === matchedDogId)
-    : null;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative w-full">
@@ -70,32 +46,25 @@ const MatchPage: React.FC = () => {
       >
         ← Back to Search
       </Link>
-      <h1 className="text-3xl font-bold text-center mb-10 mt-12">
+      <h1 className="text-3xl font-bold text-center mb-12 mt-12">
         🎲 Doggo Matcher 🐶
       </h1>
-      <div className="text-md text-center mb-8">
-        Click 👇 to match with a fur friend ❤️
-      </div>
-      <div className="mb-10">
+      {/* Sticky container for text and button */}
+      <div className="sticky top-0 z-50 w-full flex flex-col items-center bg-base-100/80 backdrop-blur-md py-4 mb-10">
+        <div className="text-md text-center mb-4">
+          Click 👇 to match with a fur friend ❤️
+        </div>
         <MatchButton onClick={handleMatch} />
       </div>
-      {/* Match result text and skeleton/animation */}
-      {(loadingMatch || matchedDog) && (
-        <div className="mb-12 text-3xl font-semibold flex items-center justify-center min-h-[48px]">
-          Your match is...{" "}
-          {loadingMatch ? (
-            <span className="ml-4 w-32 h-8 rounded skeleton"></span>
-          ) : matchedDog ? (
-            <span className="ml-4 font-bold text-primary animate-fade-in">
-              {matchedDog.name} 🎉
-            </span>
-          ) : null}
-        </div>
-      )}
       {error && <div className="alert alert-error mb-4">{error}</div>}
-      <DogCardList
+      <DogCardList dogs={dogs} highlightDogId={undefined} />
+      <MatchModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
         dogs={dogs}
-        highlightDogId={highlightDogId || matchedDogId || undefined}
+        matchDogId={matchedDogId}
+        animationDuration={HIGHLIGHT_ANIMATION_DURATION}
+        animationInterval={HIGHLIGHT_INTERVAL}
       />
     </div>
   );
