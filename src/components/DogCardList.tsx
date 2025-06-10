@@ -1,7 +1,7 @@
 import React from "react";
-import type { Dog } from "../api/dogApi";
+import type { Dog } from "../interfaces/dog";
 import DogCard from "./DogCard";
-import type { Location } from "../api/locationApi";
+import type { Location } from "../interfaces/location";
 
 interface DogCardListProps {
   dogs: Dog[];

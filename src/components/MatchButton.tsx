@@ -14,7 +14,6 @@ export function MatchButton({ onClick, disabled }: MatchButtonProps) {
       aria-label="Find your match"
       type="button"
       disabled={disabled || favouriteIds.length < 2}
-      style={{ fontWeight: 700 }}
     >
       <span>Match</span>
       <span className="text-2xl">🐾</span>

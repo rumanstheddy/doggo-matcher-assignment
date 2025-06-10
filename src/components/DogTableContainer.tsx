@@ -5,7 +5,8 @@ import { ErrorMessageWithAction } from "./ErrorMessageWithAction";
 import { Pagination } from "./Pagination";
 import DogFilters from "./DogFilters";
 import { DogTable } from "./DogTable";
-import type { Dog } from "../api/dogApi";
+import type { Dog } from "../interfaces/dog";
+import type { DogBreed } from "../types/breeds";
 
 export function DogTableContainer() {
   const {
@@ -26,6 +27,7 @@ export function DogTableContainer() {
     maxAge,
     setMinAge,
     setMaxAge,
+    getLocation,
   } = useTableData();
 
   const allIds = (dogs as Dog[] | undefined)?.map((d) => d.id) || [];
@@ -57,7 +59,7 @@ export function DogTableContainer() {
   return (
     <>
       <DogFilters
-        selectedBreeds={selectedBreeds}
+        selectedBreeds={selectedBreeds as DogBreed[]}
         setSelectedBreeds={setSelectedBreeds}
         minAge={minAge}
         maxAge={maxAge}
@@ -73,6 +75,7 @@ export function DogTableContainer() {
         sortField={sortField}
         sortDirection={sortDirection as "asc" | "desc"}
         handleSort={handleSort}
+        getLocation={getLocation}
       />
       <Pagination
         currentPage={currentPage}

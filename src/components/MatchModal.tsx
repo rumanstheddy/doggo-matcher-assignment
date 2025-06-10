@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { MatchResultText } from "./MatchResultText";
 import { useMatchAnimation } from "../hooks/useMatchAnimation";
-import type { Dog } from "../api/dogApi";
+import type { Dog } from "../interfaces/dog";
 import DogCard from "./DogCard";
-import type { Location } from "../api/locationApi";
+import type { Location } from "../interfaces/location";
 
 interface MatchModalProps {
   open: boolean;

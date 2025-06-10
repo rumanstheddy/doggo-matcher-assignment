@@ -1,13 +1,6 @@
-const BASE_URL = "https://frontend-take-home-service.fetch.com";
+import type { Location } from "../interfaces/location";
 
-export interface Location {
-  zip_code: string;
-  latitude: number;
-  longitude: number;
-  city: string;
-  state: string;
-  county: string;
-}
+const BASE_URL = "https://frontend-take-home-service.fetch.com";
 
 export async function postLocations(zipCodes: string[]): Promise<Location[]> {
   if (!Array.isArray(zipCodes) || zipCodes.length === 0)

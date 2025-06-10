@@ -1,3 +1,6 @@
+import type { Dog, DogSearchParams, DogSearchResponse } from "../interfaces/dog";
+import type { DogMatchResponse } from "../interfaces/match";
+
 const BASE_URL = "https://frontend-take-home-service.fetch.com";
 
 export async function getDogBreeds(): Promise<string[]> {
@@ -10,23 +13,6 @@ export async function getDogBreeds(): Promise<string[]> {
   }
 
   return response.json();
-}
-
-export interface DogSearchParams {
-  breeds?: string[];
-  zipCodes?: string[];
-  ageMin?: number;
-  ageMax?: number;
-  size?: number;
-  from?: number;
-  sort?: string; // e.g. "breed:asc"
-}
-
-export interface DogSearchResponse {
-  resultIds: string[];
-  total: number;
-  next?: string;
-  prev?: string;
 }
 
 export async function searchDogs(params: DogSearchParams): Promise<DogSearchResponse> {
@@ -50,15 +36,6 @@ export async function searchDogs(params: DogSearchParams): Promise<DogSearchResp
   return response.json();
 }
 
-export interface Dog {
-  img: string;
-  name: string;
-  age: number;
-  breed: string;
-  zip_code: string;
-  id: string;
-}
-
 export async function getDogsByIds(ids: string[]): Promise<Dog[]> {
   if (ids.length === 0) return [];
   if (ids.length > 100) throw new Error("Cannot fetch more than 100 dogs at once.");
@@ -77,10 +54,6 @@ export async function getDogsByIds(ids: string[]): Promise<Dog[]> {
   }
 
   return response.json();
-}
-
-export interface DogMatchResponse {
-  match: string; // dog id
 }
 
 export async function matchDogs(ids: string[]): Promise<DogMatchResponse> {

@@ -1,4 +1,4 @@
-import type { Dog } from "../api/dogApi";
+import type { Dog } from "../interfaces/dog";
 
 export function MatchResultText({
   text,

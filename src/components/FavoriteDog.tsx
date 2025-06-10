@@ -1,5 +1,5 @@
 import { BreedBadge } from "./BreedBadge";
-import type { Dog } from "../api/dogApi";
+import type { Dog } from "../interfaces/dog";
 import CloseIconButton from "./CloseIconButton";
 
 interface FavoriteDogProps {
