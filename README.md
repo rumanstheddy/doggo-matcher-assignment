@@ -12,7 +12,7 @@ This project was built with React, TypeScript, and Vite.
 
 1. **Clone the repository:**
    ```sh
-   git clone <your-repo-url>
+   git clone https://github.com/rumanstheddy/doggo-matcher-assignment.git
    cd doggo-matcher-assignment
    ```
 
