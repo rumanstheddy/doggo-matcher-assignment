@@ -1,7 +1,7 @@
 import type { Dog, DogSearchParams, DogSearchResponse } from "../interfaces/dog";
 import type { DogMatchResponse } from "../interfaces/match";
 
-const BASE_URL = "https://frontend-take-home-service.fetch.com";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 export async function getDogBreeds(): Promise<string[]> {
   const response = await fetch(`${BASE_URL}/dogs/breeds`, {

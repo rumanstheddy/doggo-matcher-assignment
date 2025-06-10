@@ -1,4 +1,4 @@
-const BASE_URL = "https://frontend-take-home-service.fetch.com";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 export async function login({ name, email }: { name: string; email: string }) {
   const response = await fetch(`${BASE_URL}/auth/login`, {

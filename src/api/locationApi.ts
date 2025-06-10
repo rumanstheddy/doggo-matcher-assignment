@@ -1,6 +1,6 @@
 import type { Location } from "../interfaces/location";
 
-const BASE_URL = "https://frontend-take-home-service.fetch.com";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 export async function postLocations(zipCodes: string[]): Promise<Location[]> {
   if (!Array.isArray(zipCodes) || zipCodes.length === 0)
