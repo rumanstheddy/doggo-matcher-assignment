@@ -35,7 +35,7 @@ const DogCard: React.FC<DogCardProps> = ({ dog, highlight, location }) => {
         <div className="mb-2">
           <BreedBadge breed={dog.breed} />
         </div>
-        {location && (
+        {location ? (
           <div className="mb-1 text-xs text-gray-600 flex flex-col gap-0.5">
             <span className="flex items-center gap-1">
               <span role="img" aria-label="location">
@@ -51,6 +51,8 @@ const DogCard: React.FC<DogCardProps> = ({ dog, highlight, location }) => {
               <span className="text-xs text-gray-400">Zip: {dog.zip_code}</span>
             </span>
           </div>
+        ) : (
+          <div className="mb-1 text-xs text-gray-400">No location provided</div>
         )}
       </div>
     </div>

@@ -46,9 +46,12 @@ export function useDogDetails(dogIds: string[]) {
 
   // Map zip_code to location for quick lookup
   const dogLocations: Record<string, Location> = React.useMemo(() => {
+    if (!locations || locations.length === 0) return {};
     const map: Record<string, Location> = {};
     for (const loc of locations) {
-      map[loc.zip_code] = loc;
+      if (loc && loc.zip_code) {
+        map[loc.zip_code] = loc;
+      }
     }
     return map;
   }, [locations]);
