@@ -1,73 +1,90 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router";
 import type { DogBreed } from "../types/breeds";
 
-export function useTableFilters(filters?: {
-  selectedBreeds?: DogBreed[];
-  minAge?: number | null;
-  maxAge?: number | null;
-}) {
+export function useTableFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const prevFiltersRef = useRef<typeof filters>({});
-  const isFirstRun = useRef(true);
+  const prevFiltersRef = useRef<{
+    selectedBreeds?: DogBreed[];
+  }>({});
 
-  // Sync filters to URL
+  // selectedBreeds from URL params
+  const breedsParams = searchParams.getAll("breeds");
+  const selectedBreeds: DogBreed[] = breedsParams as DogBreed[];
+
+  // minAge/maxAge from URL params
+  const minAgeParam = searchParams.get("ageMin");
+  const maxAgeParam = searchParams.get("ageMax");
+  const minAge = minAgeParam !== null ? Number(minAgeParam) : null;
+  const maxAge = maxAgeParam !== null ? Number(maxAgeParam) : null;
+
+  // Setters update the URL params
+  const setMinAge = useCallback(
+    (value: number | null) => {
+      const newParams = new URLSearchParams(searchParams.toString());
+      if (value === null || value === undefined || isNaN(value)) {
+        newParams.delete("ageMin");
+      } else {
+        newParams.set("ageMin", String(value));
+      }
+      setSearchParams(newParams);
+    },
+    [searchParams, setSearchParams]
+  );
+
+  const setMaxAge = useCallback(
+    (value: number | null) => {
+      const newParams = new URLSearchParams(searchParams.toString());
+      if (value === null || value === undefined || isNaN(value)) {
+        newParams.delete("ageMax");
+      } else {
+        newParams.set("ageMax", String(value));
+      }
+      setSearchParams(newParams);
+    },
+    [searchParams, setSearchParams]
+  );
+
+  const setSelectedBreeds = useCallback(
+    (breeds: DogBreed[]) => {
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.delete("breeds");
+      if (breeds && breeds.length > 0) {
+        breeds.forEach((breed) => newParams.append("breeds", breed));
+      }
+      // Reset pagination on filter change
+      newParams.set("from", "0");
+      setSearchParams(newParams);
+    },
+    [searchParams, setSearchParams]
+  );
+
+  // Sync selectedBreeds to URL if changed (for external changes)
   useEffect(() => {
-    // Only update params if filters actually changed from previous
     const prev = prevFiltersRef.current;
     const breedsChanged =
       JSON.stringify(prev?.selectedBreeds || []) !==
-      JSON.stringify(filters?.selectedBreeds || []);
-    const minAgeChanged = prev?.minAge !== filters?.minAge;
-    const maxAgeChanged = prev?.maxAge !== filters?.maxAge;
-    if (breedsChanged || minAgeChanged || maxAgeChanged) {
+      JSON.stringify(selectedBreeds || []);
+    if (breedsChanged) {
       const newParams = new URLSearchParams(searchParams.toString());
       newParams.delete("breeds");
-      if (filters?.selectedBreeds && filters.selectedBreeds.length > 0) {
-        filters.selectedBreeds.forEach((breed) => newParams.append("breeds", breed));
+      if (selectedBreeds && selectedBreeds.length > 0) {
+        selectedBreeds.forEach((breed) => newParams.append("breeds", breed));
       }
-      if (filters?.minAge !== null && filters?.minAge !== undefined) {
-        newParams.set("ageMin", String(filters.minAge));
-      } else {
-        newParams.delete("ageMin");
-      }
-      if (filters?.maxAge !== null && filters?.maxAge !== undefined) {
-        newParams.set("ageMax", String(filters.maxAge));
-      } else {
-        newParams.delete("ageMax");
-      }
+      newParams.set("from", "0"); // Reset pagination on filter change
       setSearchParams(newParams);
     }
     prevFiltersRef.current = {
-      selectedBreeds: filters?.selectedBreeds,
-      minAge: filters?.minAge,
-      maxAge: filters?.maxAge,
+      selectedBreeds,
     };
-  }, [filters?.selectedBreeds, filters?.minAge, filters?.maxAge, searchParams, setSearchParams]);
+  }, [selectedBreeds, searchParams, setSearchParams]);
 
-  // Reset pagination on filter change
-  useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-    } else {
-      const prev = prevFiltersRef.current;
-      const breedsChanged =
-        JSON.stringify(prev?.selectedBreeds || []) !==
-        JSON.stringify(filters?.selectedBreeds || []);
-      const minAgeChanged = prev?.minAge !== filters?.minAge;
-      const maxAgeChanged = prev?.maxAge !== filters?.maxAge;
-      if (breedsChanged || minAgeChanged || maxAgeChanged) {
-        setSearchParams((prevParams) => {
-          const params = { ...Object.fromEntries(prevParams) };
-          params.from = "0";
-          return params;
-        });
-      }
-    }
-    prevFiltersRef.current = {
-      selectedBreeds: filters?.selectedBreeds,
-      minAge: filters?.minAge,
-      maxAge: filters?.maxAge,
-    };
-  }, [filters?.selectedBreeds, filters?.minAge, filters?.maxAge, setSearchParams]);
+  return {
+    selectedBreeds,
+    setSelectedBreeds,
+    minAge,
+    maxAge,
+    setMinAge,
+    setMaxAge,
+  };
 }

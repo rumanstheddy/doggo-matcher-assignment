@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useTableData } from "../hooks/useTableData";
 import { useFavorites } from "../hooks/useFavorites";
@@ -7,14 +6,8 @@ import { Pagination } from "./Pagination";
 import DogFilters from "./DogFilters";
 import { DogTable } from "./DogTable";
 import type { Dog } from "../api/dogApi";
-import type { DogBreed } from "../types/breeds";
 
 export function DogTableContainer() {
-  // Filter state for DogFilters
-  const [selectedBreeds, setSelectedBreeds] = useState<DogBreed[]>([]);
-  const [minAge, setMinAge] = useState<number | null>(null);
-  const [maxAge, setMaxAge] = useState<number | null>(null);
-
   const {
     sortField,
     sortDirection,
@@ -27,11 +20,13 @@ export function DogTableContainer() {
     currentPage,
     totalPages,
     handlePaginationChange,
-  } = useTableData({
     selectedBreeds,
+    setSelectedBreeds,
     minAge,
     maxAge,
-  });
+    setMinAge,
+    setMaxAge,
+  } = useTableData();
 
   const allIds = (dogs as Dog[] | undefined)?.map((d) => d.id) || [];
   const {

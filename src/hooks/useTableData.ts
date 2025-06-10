@@ -4,17 +4,17 @@ import { usePagination } from "./usePagination";
 import { useFavorites } from "./useFavorites";
 import { useQuery } from "@tanstack/react-query";
 import { searchDogs, getDogsByIds } from "../api/dogApi";
-import type { DogBreed } from "../types/breeds";
-// import { useSearchParams } from "react-router";
 
-export function useTableData(filters?: {
-  selectedBreeds?: DogBreed[];
-  minAge?: number | null;
-  maxAge?: number | null;
-}) {
-  useTableFilters(filters);
+export function useTableData() {
+  const {
+    selectedBreeds,
+    setSelectedBreeds,
+    minAge,
+    maxAge,
+    setMinAge,
+    setMaxAge,
+  } = useTableFilters();
   const { sortField, sortDirection, handleSort } = useTableSorting();
-  // const [searchParams] = useSearchParams();
   const { size, from, handlePaginationChange } = usePagination();
 
   const sortParam = `${sortField}:${sortDirection}`;
@@ -30,9 +30,9 @@ export function useTableData(filters?: {
         sort: sortParam,
         from,
         size,
-        breeds: filters?.selectedBreeds,
-        ageMin: filters?.minAge,
-        ageMax: filters?.maxAge,
+        breeds: selectedBreeds,
+        ageMin: minAge,
+        ageMax: maxAge,
       },
     ],
     queryFn: () =>
@@ -41,11 +41,11 @@ export function useTableData(filters?: {
         from,
         size,
         breeds:
-          filters?.selectedBreeds && filters.selectedBreeds.length > 0
-            ? filters.selectedBreeds
+          selectedBreeds && selectedBreeds.length > 0
+            ? selectedBreeds
             : undefined,
-        ageMin: filters?.minAge ?? undefined,
-        ageMax: filters?.maxAge ?? undefined,
+        ageMin: minAge ?? undefined,
+        ageMax: maxAge ?? undefined,
       }),
   });
 
@@ -90,5 +90,11 @@ export function useTableData(filters?: {
     currentPage,
     totalPages,
     handlePaginationChange,
+    selectedBreeds,
+    setSelectedBreeds,
+    minAge,
+    maxAge,
+    setMinAge,
+    setMaxAge,
   };
 }
