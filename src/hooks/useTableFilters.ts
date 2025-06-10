@@ -21,7 +21,7 @@ export function useTableFilters() {
   // Setters update the URL params
   const setMinAge = useCallback(
     (value: number | null) => {
-      const newParams = new URLSearchParams(searchParams.toString());
+      const newParams = new URLSearchParams(window.location.search);
       if (value === null || value === undefined || isNaN(value)) {
         newParams.delete("ageMin");
       } else {
@@ -29,12 +29,12 @@ export function useTableFilters() {
       }
       setSearchParams(newParams);
     },
-    [searchParams, setSearchParams]
+    [setSearchParams]
   );
 
   const setMaxAge = useCallback(
     (value: number | null) => {
-      const newParams = new URLSearchParams(searchParams.toString());
+      const newParams = new URLSearchParams(window.location.search);
       if (value === null || value === undefined || isNaN(value)) {
         newParams.delete("ageMax");
       } else {
@@ -42,12 +42,12 @@ export function useTableFilters() {
       }
       setSearchParams(newParams);
     },
-    [searchParams, setSearchParams]
+    [setSearchParams]
   );
 
   const setSelectedBreeds = useCallback(
     (breeds: DogBreed[]) => {
-      const newParams = new URLSearchParams(searchParams.toString());
+      const newParams = new URLSearchParams(window.location.search);
       newParams.delete("breeds");
       if (breeds && breeds.length > 0) {
         breeds.forEach((breed) => newParams.append("breeds", breed));
@@ -56,7 +56,7 @@ export function useTableFilters() {
       newParams.set("from", "0");
       setSearchParams(newParams);
     },
-    [searchParams, setSearchParams]
+    [setSearchParams]
   );
 
   // Sync selectedBreeds to URL if changed (for external changes)

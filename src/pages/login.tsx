@@ -35,10 +35,10 @@ export function Login() {
         className="w-full max-w-xs p-8 bg-base-100 rounded-xl shadow-lg space-y-6"
         onSubmit={handleSubmit}
       >
-        <h1 className="text-2xl font-bold text-center mb-4">
-          Doggo Matcher 🐶
+        <h1 className="text-2xl font-bold text-center mb-8 whitespace-nowrap">
+          🎲 Doggo Matcher 🐶
         </h1>
-        <div className="form-control">
+        <div className="form-control flex flex-col gap-2 mb-8">
           <label className="label" htmlFor="name">
             <span className="label-text">Name</span>
           </label>
@@ -46,13 +46,13 @@ export function Login() {
             id="name"
             type="text"
             placeholder="Enter your name"
-            className="input input-bordered w-full"
+            className="input focus:input-primary w-full"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="form-control">
+        <div className="form-control flex flex-col gap-2 mb-8">
           <label className="label" htmlFor="email">
             <span className="label-text">Email</span>
           </label>
@@ -60,7 +60,7 @@ export function Login() {
             id="email"
             type="email"
             placeholder="Enter your email"
-            className="input input-bordered w-full"
+            className="input focus:input-primary w-full"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}

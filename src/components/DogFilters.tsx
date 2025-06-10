@@ -21,8 +21,12 @@ const DogFilters: React.FC<DogFiltersProps> = ({
   onMaxAgeChange,
 }) => {
   // Local state for age inputs
-  const [pendingMinAge, setPendingMinAge] = React.useState<number | "">(minAge ?? "");
-  const [pendingMaxAge, setPendingMaxAge] = React.useState<number | "">(maxAge ?? "");
+  const [pendingMinAge, setPendingMinAge] = React.useState<number | "">(
+    minAge ?? ""
+  );
+  const [pendingMaxAge, setPendingMaxAge] = React.useState<number | "">(
+    maxAge ?? ""
+  );
 
   const handleMinAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPendingMinAge(e.target.value === "" ? "" : Number(e.target.value));
@@ -31,14 +35,16 @@ const DogFilters: React.FC<DogFiltersProps> = ({
     setPendingMaxAge(e.target.value === "" ? "" : Number(e.target.value));
   };
   const handleMinAgeBlur = () => {
-    onMinAgeChange(pendingMinAge === "" ? null : pendingMinAge as number);
+    onMinAgeChange(pendingMinAge === "" ? null : (pendingMinAge as number));
   };
   const handleMaxAgeBlur = () => {
-    onMaxAgeChange(pendingMaxAge === "" ? null : pendingMaxAge as number);
+    onMaxAgeChange(pendingMaxAge === "" ? null : (pendingMaxAge as number));
   };
 
   const handleClearAll = () => {
     setSelectedBreeds([]);
+    setPendingMinAge("");
+    setPendingMaxAge("");
     onMinAgeChange(null);
     onMaxAgeChange(null);
   };
