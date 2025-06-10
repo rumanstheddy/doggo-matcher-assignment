@@ -1,7 +1,7 @@
 import React from "react";
-import type { Dog } from "../api/dogApi";
+import type { Dog } from "../interfaces/dog";
 import { BreedBadge } from "./BreedBadge";
-import type { Location } from "../api/locationApi";
+import type { Location } from "../interfaces/location";
 
 interface DogCardProps {
   dog: Dog;

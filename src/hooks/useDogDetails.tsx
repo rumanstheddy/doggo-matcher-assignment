@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { getDogsByIds, type Dog } from "../api/dogApi";
-import { postLocations, type Location } from "../api/locationApi";
+import { getDogsByIds } from "../api/dogApi";
+import { postLocations } from "../api/locationApi";
+import type { Location } from "../interfaces/location";
 import React from "react";
+import type { Dog } from "../interfaces/dog";
 
 /**
  * Custom hook to fetch dogs by IDs and their location details.
@@ -26,7 +28,13 @@ export function useDogDetails(dogIds: string[]) {
     isLoading: locationsLoading,
     error: locationsError,
   } = useQuery<Location[]>({
-    queryKey: ["dogLocations", dogs.map((d) => d.zip_code).sort().join(",")],
+    queryKey: [
+      "dogLocations",
+      dogs
+        .map((d) => d.zip_code)
+        .sort()
+        .join(","),
+    ],
     queryFn: () => {
       const zipCodes = Array.from(new Set(dogs.map((d) => d.zip_code)));
       if (!zipCodes.length) return Promise.resolve([]);

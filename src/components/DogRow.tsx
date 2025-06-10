@@ -1,13 +1,21 @@
-import type { Dog } from "../api/dogApi";
+import type { Dog } from "../interfaces/dog";
 import { BreedBadge } from "./BreedBadge";
 
 interface DogRowProps {
   dog: Dog;
   isFavourite: boolean;
   onToggleFavourite: (id: string) => void;
+  onDogHover?: (e: React.MouseEvent) => void;
+  onDogHoverLeave?: () => void;
 }
 
-export function DogRow({ dog, isFavourite, onToggleFavourite }: DogRowProps) {
+export function DogRow({
+  dog,
+  isFavourite,
+  onToggleFavourite,
+  onDogHover,
+  onDogHoverLeave,
+}: DogRowProps) {
   return (
     <tr>
       <td className="px-4 py-2 w-16 text-center">
@@ -36,13 +44,25 @@ export function DogRow({ dog, isFavourite, onToggleFavourite }: DogRowProps) {
           </svg>
         </button>
       </td>
-      <td className="flex items-center gap-2 xl:pl-14 pr-4 py-2 w-32 sm:w-36 md:w-40 lg:w-48 xl:w-56">
+      <td
+        className="flex items-center gap-2 xl:pl-14 pr-4 py-2 w-32 sm:w-36 md:w-40 lg:w-48 xl:w-56 cursor-pointer"
+        onMouseEnter={onDogHover}
+        onMouseLeave={onDogHoverLeave}
+      >
         <img
           src={dog.img}
           alt={dog.name}
           className="w-10 h-10 rounded object-cover"
+          onMouseEnter={onDogHover}
+          onMouseLeave={onDogHoverLeave}
         />
-        {dog.name}
+        <span
+          onMouseEnter={onDogHover}
+          onMouseLeave={onDogHoverLeave}
+          className="hover:underline"
+        >
+          {dog.name}
+        </span>
       </td>
       <td className="pr-4 pl-6 py-2 w-24 sm:w-28 md:w-32 lg:w-36 xl:w-40">
         {dog.age}

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import type { Dog } from "../api/dogApi";
-import type { Location } from "../api/locationApi";
+import type { Dog } from "../interfaces/dog";
+import type { Location } from "../interfaces/location";
 
 export function useMatchAnimation(
   dogs: Dog[],
@@ -12,8 +12,12 @@ export function useMatchAnimation(
   const [currentDog, setCurrentDog] = useState<Dog | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [matchedDog, setMatchedDog] = useState<Dog | null>(null);
-  const [currentLocation, setCurrentLocation] = useState<Location | undefined>(undefined);
-  const [matchedLocation, setMatchedLocation] = useState<Location | undefined>(undefined);
+  const [currentLocation, setCurrentLocation] = useState<Location | undefined>(
+    undefined
+  );
+  const [matchedLocation, setMatchedLocation] = useState<Location | undefined>(
+    undefined
+  );
   const timerRef = useRef<number | null>(null);
   const timeoutRef = useRef<number | null>(null);
 
@@ -61,5 +65,12 @@ export function useMatchAnimation(
     };
   }, []);
 
-  return { currentDog, isAnimating, matchedDog, currentLocation, matchedLocation, startAnimation };
+  return {
+    currentDog,
+    isAnimating,
+    matchedDog,
+    currentLocation,
+    matchedLocation,
+    startAnimation,
+  };
 }

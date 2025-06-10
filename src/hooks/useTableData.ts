@@ -4,6 +4,8 @@ import { usePagination } from "./usePagination";
 import { useFavorites } from "./useFavorites";
 import { useQuery } from "@tanstack/react-query";
 import { searchDogs, getDogsByIds } from "../api/dogApi";
+import { useDogDetails } from "./useDogDetails";
+import type { Dog } from "../interfaces/dog";
 
 export function useTableData() {
   const {
@@ -66,6 +68,13 @@ export function useTableData() {
     enabled: !!searchResult,
   });
 
+  // Fetch dog locations using useDogDetails
+  const dogIds = dogs?.map((d) => d.id) || [];
+  const { dogLocations } = useDogDetails(dogIds);
+
+  // Helper to get location for a dog
+  const getLocation = (dog: Dog) => dogLocations?.[dog.zip_code];
+
   const allIds = dogs?.map((d) => d.id) || [];
   const {
     favouriteIds,
@@ -96,5 +105,6 @@ export function useTableData() {
     maxAge,
     setMinAge,
     setMaxAge,
+    getLocation, // expose getLocation for table/row usage
   };
 }
