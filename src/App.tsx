@@ -7,6 +7,7 @@ import "./index.css";
 import { useAuthStatus } from "./hooks/useAuthStatus";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MatchPage from "./pages/match";
+import DogLoaderLoader from "./components/DogLoaderLoader";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +25,7 @@ function AuthGate() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      Loading...
+      <DogLoaderLoader />
     </div>
   );
 }

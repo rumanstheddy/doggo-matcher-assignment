@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import FavoritesSideBar from "../components/FavoritesSideBar";
 import MatchButton from "../components/MatchButton";
 import { logout } from "../api/authApi";
+import DogLoaderLoader from "../components/DogLoaderLoader";
 
 export function Search() {
   const isAuthenticated = useAuthStatus();
@@ -19,7 +20,7 @@ export function Search() {
   if (isAuthenticated === null) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        Checking authentication...
+        <DogLoaderLoader />
       </div>
     );
   }

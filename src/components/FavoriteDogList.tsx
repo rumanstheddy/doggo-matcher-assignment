@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getDogsByIds } from "../api/dogApi";
 import { useFavorites } from "../hooks/useFavorites";
 import FavoriteDog from "./FavoriteDog";
+import DogLoaderLoader from "./DogLoaderLoader";
 
 interface FavoritesDogListProps {
   onRemove: (id: string) => void;
@@ -17,13 +18,16 @@ export function FavoriteDogList({ onRemove }: FavoritesDogListProps) {
   } = useQuery({
     queryKey: ["favoriteDogs", favouriteIds],
     queryFn: () =>
-      favouriteIds.length > 0 ? getDogsByIds(favouriteIds) : Promise.resolve([]),
+      favouriteIds.length > 0
+        ? getDogsByIds(favouriteIds)
+        : Promise.resolve([]),
     enabled: Array.isArray(favouriteIds),
     staleTime: 1000 * 60, // 1 minute
   });
 
-  if (isLoading) return <div className="p-4">Loading favorites...</div>;
-  if (error) return <div className="p-4 text-error">{(error as Error).message}</div>;
+  if (isLoading) return <DogLoaderLoader />;
+  if (error)
+    return <div className="p-4 text-error">{(error as Error).message}</div>;
   if (!dogs || dogs.length === 0)
     return <div className="p-4 text-gray-400">No favorites yet.</div>;
 
