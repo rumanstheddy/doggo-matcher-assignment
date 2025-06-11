@@ -15,6 +15,7 @@ function setLocalStorageFavourites(ids: string[]) {
 }
 
 export function useFavorites(allIds: string[] = []) {
+  const MAX_FAVOURITES = 100;
   const [favouriteIds, setFavouriteIds] = useState<string[]>(
     getLocalStorageFavourites()
   );
@@ -54,6 +55,10 @@ export function useFavorites(allIds: string[] = []) {
     } else {
       // Add all current page dogs to favourites
       const updated = Array.from(new Set([...favouriteIds, ...allIds]));
+      if (updated.length > MAX_FAVOURITES) {
+        alert(`You can only favorite up to ${MAX_FAVOURITES} dogs at a time.`);
+        return;
+      }
       setLocalStorageFavourites(updated);
       setFavouriteIds(updated);
     }
@@ -64,6 +69,10 @@ export function useFavorites(allIds: string[] = []) {
     if (favouriteIds.includes(id)) {
       updated = favouriteIds.filter((favId) => favId !== id);
     } else {
+      if (favouriteIds.length >= MAX_FAVOURITES) {
+        alert(`You can only favorite up to ${MAX_FAVOURITES} dogs at a time.`);
+        return;
+      }
       updated = [...favouriteIds, id];
     }
     setLocalStorageFavourites(updated);

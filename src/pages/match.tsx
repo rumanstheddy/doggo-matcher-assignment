@@ -19,7 +19,11 @@ const MatchPage: React.FC = () => {
   const [isMatching, setIsMatching] = useState(false);
 
   // Use custom hook to get dogs and their locations
-  const { dogs, dogLocations, error: dogDetailsError } = useDogDetails(favouriteIds);
+  const {
+    dogs,
+    dogLocations,
+    error: dogDetailsError,
+  } = useDogDetails(favouriteIds);
 
   // Find the matched dog object
   const matchedDog =
@@ -81,7 +85,7 @@ const MatchPage: React.FC = () => {
             />
             <button
               type="button"
-              className="btn btn-circle text-xl btn-primary my-4"
+              className="btn btn-circle text-xl btn-primary my-4 pb-1"
               onClick={handleReset}
               disabled={isMatching}
             >
@@ -98,7 +102,9 @@ const MatchPage: React.FC = () => {
         )}
       </div>
       {(error || dogDetailsError) && (
-        <div className="alert alert-error mb-4">{error || String(dogDetailsError)}</div>
+        <div className="alert alert-error mb-4">
+          {error || String(dogDetailsError)}
+        </div>
       )}
       <DogCardList
         dogs={dogs}

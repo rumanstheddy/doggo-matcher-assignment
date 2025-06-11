@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { MatchResultText } from "./MatchResultText";
 import { useMatchAnimation } from "../hooks/useMatchAnimation";
 import type { Dog } from "../interfaces/dog";
 import DogCard from "./DogCard";
 import type { Location } from "../interfaces/location";
+import { useCloseOnBlurOrEscape } from "../hooks/useCloseOnBlurOrEscape";
 
 interface MatchModalProps {
   open: boolean;
@@ -27,6 +28,9 @@ export function MatchModal({
   const { currentDog, isAnimating, startAnimation, matchedDog } =
     useMatchAnimation(dogs, matchDogId, animationDuration, animationInterval);
 
+  const modalRef = useRef<HTMLDivElement>(null);
+  useCloseOnBlurOrEscape(modalRef, onClose);
+
   useEffect(() => {
     if (open) startAnimation();
     // eslint-disable-next-line
@@ -35,7 +39,10 @@ export function MatchModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90">
+    <div
+      ref={modalRef}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90"
+    >
       {/* Close button in the top right of the modal overlay */}
       {/* Result text above the card, transparent bg */}
       <div className="px-6 py-3 rounded-xl bg-base-100/0 shadow-lg text-center">
