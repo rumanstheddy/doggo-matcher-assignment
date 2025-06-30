@@ -5,7 +5,7 @@ import { ErrorMessageWithAction } from "./ErrorMessageWithAction";
 import { Pagination } from "./Pagination";
 import DogFilters from "./DogFilters";
 import { DogTable } from "./DogTable";
-import DogLoaderLoader from "./DogLoaderLoader";
+import Loader from "./Loader";
 import type { Dog } from "../interfaces/dog";
 import type { DogBreed } from "../types/breeds";
 
@@ -41,7 +41,7 @@ export function DogTableContainer() {
 
   const navigate = useNavigate();
 
-  if (searchLoading || dogsLoading) return <DogLoaderLoader />;
+  if (searchLoading || dogsLoading) return <Loader />;
   if (searchError)
     return (
       <ErrorMessageWithAction

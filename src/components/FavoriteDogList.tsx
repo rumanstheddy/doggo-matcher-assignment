@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getDogsByIds } from "../api/dogApi";
 import { useFavorites } from "../hooks/useFavorites";
 import FavoriteDog from "./FavoriteDog";
-import DogLoaderLoader from "./DogLoaderLoader";
+import Loader from "./Loader";
 
 interface FavoritesDogListProps {
   onRemove: (id: string) => void;
@@ -25,7 +25,7 @@ export function FavoriteDogList({ onRemove }: FavoritesDogListProps) {
     staleTime: 1000 * 60, // 1 minute
   });
 
-  if (isLoading) return <DogLoaderLoader />;
+  if (isLoading) return <Loader />;
   if (error)
     return <div className="p-4 text-error">{(error as Error).message}</div>;
   if (!dogs || dogs.length === 0)
