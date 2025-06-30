@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFavorites } from "../hooks/useFavorites";
 import { matchDogs } from "../api/dogApi";
 import DogCardList from "../components/DogCardList";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import MatchButton from "../components/MatchButton";
 import { MatchModal } from "../components/MatchModal";
 import { MatchResultText } from "../components/MatchResultText";
 import { useDogDetails } from "../hooks/useDogDetails";
+import { useAuthStatus } from "../hooks/useAuthStatus";
+import Loader from "../components/Loader";
 
 const HIGHLIGHT_ANIMATION_DURATION = 2500; // ms
 const HIGHLIGHT_INTERVAL = 150; // ms
@@ -24,6 +26,23 @@ const MatchPage: React.FC = () => {
     dogLocations,
     error: dogDetailsError,
   } = useDogDetails(favouriteIds);
+
+  const isAuthenticated = useAuthStatus();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated === false) {
+      navigate("/login", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (isAuthenticated === null) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader />
+      </div>
+    );
+  }
 
   // Find the matched dog object
   const matchedDog =
