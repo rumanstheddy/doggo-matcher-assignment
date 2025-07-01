@@ -97,13 +97,13 @@ export function DogTable({
       </table>
       {hoveredDog && mousePos && (
         <div
-          className="fixed z-100 pointer-events-none"
+          className="fixed z-100 pointer-events-none w-80 max-w-[90vw] max-h-[90vh]"
           style={{
-            left: Math.min(mousePos.x + 24, window.innerWidth - 340), // 340 = card width + margin
-            top: Math.min(Math.max(mousePos.y - 24, 0), window.innerHeight - 420), // 420 = card height + margin
-            width: 320, // adjust to your DogCard width
-            maxWidth: "90vw",
-            maxHeight: "90vh",
+            left: Math.min(mousePos.x + 24, window.innerWidth - 340), //? 340 = card width + margin
+            top: Math.min(
+              Math.max(mousePos.y - 24, 0),
+              window.innerHeight - 420
+            ), //? 420 = card height + margin
           }}
         >
           <DogCard dog={hoveredDog} location={hoveredLocation} />
