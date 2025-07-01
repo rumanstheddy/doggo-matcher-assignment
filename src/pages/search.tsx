@@ -59,8 +59,11 @@ export function Search() {
         🎲 Doggo Matcher 🐶
       </h1>
       <p className="text-center text-md text-white mb-8 max-w-xl">
-        Search through adorable dogs, add your favorites, and click the Match 🐾
-        button to discover your perfect doggo companion!
+        Sort dogs by <span className="font-semibold text-primary">Name</span>,{" "}
+        <span className="font-semibold text-primary">Age</span>, or{" "}
+        <span className="font-semibold text-primary">Breed</span>, and filter by
+        selected breeds and age range. Add your favorites, then click the Match
+        🐾 button to discover your perfect doggo companion!
       </p>
       <DogTableContainer />
       <FavoritesSideBar />
