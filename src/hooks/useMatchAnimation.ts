@@ -10,7 +10,6 @@ export function useMatchAnimation(
   getLocation?: (dog: Dog) => Location | undefined
 ) {
   const [currentDog, setCurrentDog] = useState<Dog | null>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
   const [matchedDog, setMatchedDog] = useState<Dog | null>(null);
   const [currentLocation, setCurrentLocation] = useState<Location | undefined>(
     undefined
@@ -18,6 +17,7 @@ export function useMatchAnimation(
   const [matchedLocation, setMatchedLocation] = useState<Location | undefined>(
     undefined
   );
+  const [isAnimating, setIsAnimating] = useState(false);
   const timerRef = useRef<number | null>(null);
   const timeoutRef = useRef<number | null>(null);
 

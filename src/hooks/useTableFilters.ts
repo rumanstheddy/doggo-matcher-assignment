@@ -8,17 +8,14 @@ export function useTableFilters() {
     selectedBreeds?: DogBreed[];
   }>({});
 
-  // selectedBreeds from URL params
   const breedsParams = searchParams.getAll("breeds");
   const selectedBreeds: DogBreed[] = breedsParams as DogBreed[];
 
-  // minAge/maxAge from URL params
   const minAgeParam = searchParams.get("ageMin");
   const maxAgeParam = searchParams.get("ageMax");
   const minAge = minAgeParam !== null ? Number(minAgeParam) : null;
   const maxAge = maxAgeParam !== null ? Number(maxAgeParam) : null;
 
-  // Setters update the URL params
   const setMinAge = useCallback(
     (value: number | null) => {
       const newParams = new URLSearchParams(window.location.search);
@@ -59,7 +56,7 @@ export function useTableFilters() {
     [setSearchParams]
   );
 
-  // Sync selectedBreeds to URL if changed (for external changes)
+  // ? Sync selectedBreeds to URL if changed (for external changes)
   useEffect(() => {
     const prev = prevFiltersRef.current;
     const breedsChanged =
@@ -71,7 +68,7 @@ export function useTableFilters() {
       if (selectedBreeds && selectedBreeds.length > 0) {
         selectedBreeds.forEach((breed) => newParams.append("breeds", breed));
       }
-      newParams.set("from", "0"); // Reset pagination on filter change
+      newParams.set("from", "0"); // ! Reset pagination on filter change
       setSearchParams(newParams);
     }
     prevFiltersRef.current = {

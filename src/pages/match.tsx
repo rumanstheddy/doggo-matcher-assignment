@@ -20,7 +20,6 @@ const MatchPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isMatching, setIsMatching] = useState(false);
 
-  // Use custom hook to get dogs and their locations
   const {
     dogs,
     dogLocations,
@@ -44,13 +43,11 @@ const MatchPage: React.FC = () => {
     );
   }
 
-  // Find the matched dog object
   const matchedDog =
     matchedDogId && dogs.find((d) => d.id === matchedDogId)
       ? dogs.find((d) => d.id === matchedDogId)
       : null;
 
-  // Handle match button click
   const handleMatch = async () => {
     setError(null);
     setShowModal(true);
@@ -67,12 +64,8 @@ const MatchPage: React.FC = () => {
     }
   };
 
-  // Track if a match session has started (persists until navigation away)
   const hasMatched = showModal || matchedDogId !== null;
-  // Ensure matchedDog is always Dog|null (never undefined)
-  const safeMatchedDog = matchedDog || null;
 
-  // Reset match state to allow playing again
   const handleReset = () => {
     setMatchedDogId(null);
     setShowModal(false);
@@ -92,7 +85,7 @@ const MatchPage: React.FC = () => {
       <h1 className="text-3xl font-bold text-center mb-12 mt-12">
         🎲 Doggo Matcher 🐶
       </h1>
-      {/* Sticky container for text and button or result */}
+
       <div className="sticky top-0 z-50 w-full flex flex-col items-center bg-base-100/80 backdrop-blur-md py-4 min-h-[80px]">
         {hasMatched ? (
           <>
@@ -100,7 +93,7 @@ const MatchPage: React.FC = () => {
               className="mb-4 text-3xl font-semibold flex items-center justify-center min-h-[48px]"
               text="Your match is..."
               loading={isMatching}
-              matchedDog={safeMatchedDog}
+              matchedDog={matchedDog || null}
             />
             <button
               type="button"

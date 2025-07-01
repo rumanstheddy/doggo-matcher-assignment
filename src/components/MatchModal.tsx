@@ -43,8 +43,6 @@ export function MatchModal({
       ref={modalRef}
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90"
     >
-      {/* Close button in the top right of the modal overlay */}
-      {/* Result text above the card, transparent bg */}
       <div className="px-6 py-3 rounded-xl bg-base-100/0 shadow-lg text-center">
         <MatchResultText
           text="You matched with..."

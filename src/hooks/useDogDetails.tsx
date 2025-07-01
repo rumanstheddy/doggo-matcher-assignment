@@ -2,14 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getDogsByIds } from "../api/dogApi";
 import { postLocations } from "../api/locationApi";
 import type { Location } from "../interfaces/location";
-import React from "react";
+import { useMemo } from "react";
 import type { Dog } from "../interfaces/dog";
 
-/**
- * Custom hook to fetch dogs by IDs and their location details.
- * @param dogIds Array of dog IDs
- * @returns { dogs, locations, dogLocations, isLoading, error }
- */
 export function useDogDetails(dogIds: string[]) {
   // Fetch all dogs by IDs
   const {
@@ -45,7 +40,7 @@ export function useDogDetails(dogIds: string[]) {
   });
 
   // Map zip_code to location for quick lookup
-  const dogLocations: Record<string, Location> = React.useMemo(() => {
+  const dogLocations: Record<string, Location> = useMemo(() => {
     if (!locations || locations.length === 0) return {};
     const map: Record<string, Location> = {};
     for (const loc of locations) {

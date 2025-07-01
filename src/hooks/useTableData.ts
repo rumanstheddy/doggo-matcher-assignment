@@ -68,11 +68,10 @@ export function useTableData() {
     enabled: !!searchResult,
   });
 
-  // Fetch dog locations using useDogDetails
+  // ? Fetch dog locations using useDogDetails
   const dogIds = dogs?.map((d) => d.id) || [];
   const { dogLocations } = useDogDetails(dogIds);
 
-  // Helper to get location for a dog
   const getLocation = (dog: Dog) => dogLocations?.[dog.zip_code];
 
   const allIds = dogs?.map((d) => d.id) || [];

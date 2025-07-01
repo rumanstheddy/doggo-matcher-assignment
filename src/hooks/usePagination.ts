@@ -4,7 +4,6 @@ import { useEffect } from "react";
 export function usePagination() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Ensure default pagination params on first load
   useEffect(() => {
     const newParams: Record<string, string> = {
       ...Object.fromEntries(searchParams),
