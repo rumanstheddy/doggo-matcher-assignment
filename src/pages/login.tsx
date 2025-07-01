@@ -15,7 +15,7 @@ export function Login() {
     setError(null);
     try {
       const response = await login({ name, email });
-      // Store name and email in localStorage only if login is successful
+      // ? Store name and email in localStorage only if login is successful
       if (response.ok) {
         localStorage.setItem("userName", name);
         localStorage.setItem("userEmail", email);
