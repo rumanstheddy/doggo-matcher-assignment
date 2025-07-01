@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router";
-import type { DogBreed } from "../interfaces/breeds";
+import type { DogBreed } from "../types/breeds";
 
 export function useTableFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
